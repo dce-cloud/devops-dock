@@ -1,0 +1,28 @@
+volumes:
+  rancher-data:
+    driver: ${VOLUMES_DRIVER}
+  rancher-auditlog:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### Rancher ################################################
+  rancher:
+    build:
+      context: ${RANCHER_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        RANCHER_VERSION: ${RANCHER_VERSION}
+    container_name: ${RANCHER_CONTAINER_NAME}
+    hostname: ${RANCHER_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    privileged: true
+    cgroup: "host"
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - rancher-data:/var/lib/rancher
+      - rancher-auditlog:/var/log/auditlog
+    networks:
+      backend:
+        ipv4_address: ${RANCHER_BACKEND_IP}

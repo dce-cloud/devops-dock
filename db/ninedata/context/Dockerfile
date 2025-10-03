@@ -1,0 +1,7 @@
+ARG DOCKER_REGISTRY_URL=
+ARG NINEDATA_VERSION=latest
+FROM ${DOCKER_REGISTRY_URL}ninedata.ninedata:${NINEDATA_VERSION}
+
+LABEL maintainer="zaizai <373045134@qq.com>"
+
+ENV TZ=Asia/Shanghai

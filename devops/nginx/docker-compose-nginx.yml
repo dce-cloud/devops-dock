@@ -1,0 +1,31 @@
+volumes:
+  nginx-log:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### Nginx ############################################
+  nginx:
+    build:
+      context: ${NGINX_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        NGINX_VERSION: ${NGINX_VERSION}
+    container_name: ${NGINX_CONTAINER_NAME}
+    hostname: ${NGINX_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - nginx-log:/var/log/nginx
+    networks:
+      backend:
+        ipv4_address: ${NGINX_BACKEND_IP}
+    extra_hosts:
+      - "${HOST_DOCKER_INTERNAL}:${HOST_GATEWAY}"
+      - "${LOKI_READ_CONTAINER_NAME}:${LOKI_READ_BACKEND_IP}"
+      - "${LOKI_WRITE_CONTAINER_NAME}:${LOKI_WRITE_BACKEND_IP}"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

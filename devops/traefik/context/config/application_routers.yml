@@ -1,0 +1,62 @@
+#### yapi ####
+
+YapiRouterAnchor: &YapiRouterAnchor
+  rule: "Host(`yapi.devops.top`)"
+  service: YapiSvc
+  middlewares:
+
+#### zentao ####
+
+ZentaoRouterAnchor: &ZentaoRouterAnchor
+  rule: "Host(`zentao.devops.cn`)"
+  service: ZentaoSvc
+  middlewares:
+
+#### NeneData ####
+
+NineDataRouterAnchor: &NineDataRouterAnchor
+  rule: "Host(`ninedata.devops.top`)"
+  service: NinedataSvc
+  middlewares:
+
+#### Http ####
+
+http:
+  services:
+    YapiSvc:
+      loadBalancer:
+        servers:
+          - url: "http://yapi:3008"
+    ZentaoSvc:
+      loadBalancer:
+        servers:
+          - url: "http://zentao:80"
+    NinedataSvc:
+      loadBalancer:
+        servers:
+          - url: "http://ninedata:9999"
+
+  routers:
+
+    #### yapi ####
+
+    YapiHttp:
+      <<: *YapiRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### zentao ####
+
+    ZentaoHttp:
+      <<: *ZentaoRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### ninedata ####
+    NinedataHttp:
+      <<: *NineDataRouterAnchor
+      entryPoints:
+        - web
+      priority: 100

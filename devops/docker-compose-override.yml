@@ -1,0 +1,7 @@
+services:
+  jenkins:
+    extra_hosts:
+      - "${GIT_SCM_DOMAIN}:${GIT_SCM_HOST}"
+  gitlab:
+    extra_hosts:
+      - "${GITLAB_HOSTNAME}:${GITLAB_BACKEND_IP}"

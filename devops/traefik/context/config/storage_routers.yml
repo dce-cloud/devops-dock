@@ -1,0 +1,44 @@
+#### minio ####
+
+MinioRouterAnchor: &MinioRouterAnchor
+  rule: "Host(`minio.devops.top`)"
+  service: MinioSvc
+  middlewares:
+
+#### rustfs ####
+
+RustfsRouterAnchor: &RustfsRouterAnchor
+  rule: "Host(`rustfs.devops.top`)"
+  service: RustfsSvc
+  middlewares:
+
+#### Http ####
+
+http:
+  services:
+    MinioSvc:
+      loadBalancer:
+        servers:
+          - url: "http://minio:9001"
+    RustfsSvc:
+      loadBalancer:
+        servers:
+          - url: "http://rustfs:9000"
+
+  routers:
+
+    #### minio ####
+
+    MinioHttp:
+      <<: *MinioRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### rustfs ####
+
+    RustfsHttp:
+      <<: *RustfsRouterAnchor
+      entryPoints:
+        - web
+      priority: 100

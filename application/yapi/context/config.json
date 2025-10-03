@@ -1,0 +1,15 @@
+{
+  "port": "3008",
+  "adminAccount": "admin2025@yapi.com",
+  "adminPassword": "GiEJcmjqzdzERAJHaWxJH7wH",
+  "closeRegister":true,
+  "timeout":120000,
+  "db": {
+    "servername": "mongo4",
+    "DATABASE": "yapi",
+    "port": 27017,
+    "user": "yapi",
+    "pass": "yapi@0927",
+    "authSource": "admin"
+  }
+}

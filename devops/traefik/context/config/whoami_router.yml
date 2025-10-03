@@ -1,0 +1,39 @@
+http:
+  services:
+    traefikWhoamiSvc:
+      loadBalancer:
+        servers:
+          - url: "http://traefik-whoami:80"
+    traefikWhoami2Svc:
+      loadBalancer:
+        servers:
+          - url: "http://traefik-whoami2:80"
+
+  middlewares:
+    traefikWhoamiReplacepathregex:
+      replacePathRegex:
+        regex: "^/api/english/(.*)"
+        replacement: "/api/${1}"
+    traefikWhoami2Replacepathregex:
+      replacePathRegex:
+        regex: "^/api/math/(.*)"
+        replacement: "/api/${1}"
+
+  routers:
+    traefikWhoami:
+      entryPoints:
+        - web
+      rule: "Host(`api.devops.top`) && PathPrefix(`/api/english/`)"
+      service: traefikWhoamiSvc
+      middlewares:
+        - traefikWhoamiReplacepathregex
+        
+    traefikWhoami2:
+      entryPoints:
+        - web
+      rule: "Host(`api.devops.top`) && PathPrefix(`/api/math/`)"
+      service: traefikWhoami2Svc
+      middlewares:
+        - traefikWhoami2Replacepathregex
+
+  

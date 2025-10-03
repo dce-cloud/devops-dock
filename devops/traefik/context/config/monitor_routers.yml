@@ -1,0 +1,88 @@
+#### Portainer ####
+
+PortainerRouterAnchor: &PortainerRouterAnchor
+  rule: "Host(`portainer.devops.top`)"
+  service: PortainerSvc
+  middlewares:
+
+#### Grafana ####
+
+GrafanaRouterAnchor: &GrafanaRouterAnchor
+  rule: "Host(`grafana.devops.top`)"
+  service: GrafanaSvc
+  middlewares:
+
+#### Alloy ####
+
+AlloyRouterAnchor: &AlloyRouterAnchor
+  rule: "Host(`alloy.devops.top`)"
+  service: AlloySvc
+  middlewares:
+    - alloyUi
+
+#### Rancher ####
+
+RancherRouterAnchor: &RancherRouterAnchor
+  rule: "Host(`rancher.devops.top`)"
+  service: RancherSvc
+  middlewares:
+
+#### Http ####
+
+http:
+  services:
+    PortainerSvc:
+      loadBalancer:
+        servers:
+          - url: "http://portainer:9000"
+    GrafanaSvc:
+      loadBalancer:
+        servers:
+          - url: "http://grafana:3000"
+    AlloySvc:
+      loadBalancer:
+        servers:
+          - url: "http://alloy:12345"
+    RancherSvc:
+      loadBalancer:
+        servers:
+          - url: "http://rancher:80"
+
+  middlewares:
+    alloyUi:
+      basicAuth:
+        usersFile: /run/secrets/alloy_basicauth_users
+
+  routers:
+
+    #### Portainer ####
+
+    PortainerHttp:
+      <<: *PortainerRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### Grafana ####
+
+    GrafanaHttp:
+      <<: *GrafanaRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### Alloy ####
+
+    AlloyHttp:
+      <<: *AlloyRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### Rancher ####
+
+    RancherHttp:
+      <<: *RancherRouterAnchor
+      entryPoints:
+        - web
+      priority: 100

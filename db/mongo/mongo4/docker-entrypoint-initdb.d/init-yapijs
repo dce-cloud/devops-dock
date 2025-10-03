@@ -1,0 +1,8 @@
+// 连接到 admin 数据库（root 用户必须在 admin 库创建）
+db = db.getSiblingDB('admin');
+
+db.createUser({
+  user: "zhiniu",
+  pwd: "zhiniu@0927",
+  roles: [{ role: "root", db: "admin" }]
+});

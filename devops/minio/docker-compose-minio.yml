@@ -1,0 +1,31 @@
+volumes:
+  minio-data:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+### MINIO ##############################################
+  minio:
+    build:
+      context: ${MINIO_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        MINIO_VERSION: ${MINIO_VERSION}
+    container_name: ${MINIO_CONTAINER_NAME}
+    hostname: ${MINIO_HOSTNAME}
+    command: |
+      server /data --console-address ":9001"
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - minio-data:/data
+    environment:
+      TZ: ${TZ}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    networks:
+      backend:
+        ipv4_address: ${MINIO_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3

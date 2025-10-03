@@ -1,0 +1,14 @@
+env:
+  FLUSH_INTERVAL: 1
+  STDOUT_FMT: 'json_lines'
+  LOG_LEVEL: info
+
+service:
+  flush: ${FLUSH_INTERVAL}
+  log_level: ${LOG_LEVEL}
+  daemon: false
+  buffer_max_size: 1MB
+
+includes:
+  - /fluent-bit/etc/php.yaml
+      

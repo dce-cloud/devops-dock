@@ -1,0 +1,47 @@
+volumes:
+  traefik-data:
+    driver: ${VOLUMES_DRIVER}
+
+secrets:
+  traefik_basicauth_users:
+    file: ${TRAEFIK_HOST_PATH}/htpasswd/traefik
+  alloy_basicauth_users:
+    file: ${TRAEFIK_HOST_PATH}/htpasswd/alloy
+
+services:
+
+### TRAEFIK ##############################################
+  traefik:
+    build:
+      context: ${TRAEFIK_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        TRAEFIK_VERSION: ${TRAEFIK_VERSION}
+    container_name: ${TRAEFIK_CONTAINER_NAME}
+    hostname: ${TRAEFIK_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - traefik-data:/data
+      - ${DOCKER_SOCK_HOST_PATH}:/var/run/docker.sock:ro
+      - ${TRAEFIK_HOST_PATH}/config:/etc/traefik/config
+      - ${TRAEFIK_HOST_PATH}/traefik.yml:/etc/traefik/traefik.yml
+      - ${TRAEFIK_HOST_PATH}/certs:/certs
+    ports:
+      - ${TRAEFIK_HOST_HTTP_PORT}:80
+      - ${TRAEFIK_HOST_HTTPS_PORT}:443
+      - ${TRAEFIK_HOST_PHP_INNERAPI_PORT}:8242
+      - ${TRAEFIK_HOST_PHP_RPC_PORT}:8383
+    secrets:
+      - traefik_basicauth_users
+      - alloy_basicauth_users
+    environment:
+      TZ: ${TZ}
+    networks:
+      backend:
+        ipv4_address: ${TRAEFIK_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

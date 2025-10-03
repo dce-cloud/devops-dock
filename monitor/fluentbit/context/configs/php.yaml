@@ -1,0 +1,51 @@
+pipeline:
+  inputs:
+    - name: tail
+      buffer_chunk_size: 1M
+      buffer_max_size: 2M
+      tag: qingqiu-php-legion
+      path: /var/log/devops/*/*
+      exclude_path: */README.md
+      mem_buf_limit: 5MB
+      skip_long_lines: on
+      read_from_head: on
+      
+  filters:
+    - name: grep
+      match: host.a
+      regex: $filename ^/a/([^/]+)/.*$
+      set:
+        subdir: $1
+    - name: modify
+      match: host.a
+      add:
+        dir_label: a_subdir_${subdir}
+    - name: parser
+      match: host.a
+      key_name: log
+      parser: json
+      reserve_data: true
+    - name: modify
+      match: host.a
+      conditional:
+        - key: log
+          operator: regex
+          pattern: '^{.*}$'
+          add:
+            log_format: json
+        - key: log
+          operator: regex
+          pattern: '^([^{].*|.*[^}])$'
+          add:
+            log_format: text
+
+  outputs:
+    - name: loki
+      match: qingqiu-php-legion
+      host: loki
+      labels:
+        job: fluent-bit
+        base_dir: a
+        subdir: ${subdir}
+        dir_label: ${dir_label}
+        log_format: ${log_format}

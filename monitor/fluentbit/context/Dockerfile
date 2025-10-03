@@ -1,0 +1,7 @@
+ARG DOCKER_REGISTRY_URL=
+ARG FLUENTBIT_VERSION=latest
+FROM ${DOCKER_REGISTRY_URL}fluent.fluent-bit:${FLUENTBIT_VERSION}
+
+LABEL maintainer="zaizai <373045134@qq.com>"
+
+ENV TZ=Asia/Shanghai

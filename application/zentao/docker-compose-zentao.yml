@@ -1,0 +1,52 @@
+volumes:
+  zentao-data:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+### ZENTAO ##############################################
+  zentao:
+    build:
+      context: ${ZENTAO_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        ZENTAO_VERSION: ${ZENTAO_VERSION}
+    container_name: ${ZENTAO_CONTAINER_NAME}
+    hostname: ${ZENTAO_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - zentao-data:/data
+    environment:
+      TZ: ${TZ}
+      ZT_MYSQL_HOST: ${ZENTAO_MYSQL_HOST}
+      ZT_MYSQL_PORT: ${ZENTAO_MYSQL_PORT}
+      ZT_MYSQL_USER: ${ZENTAO_MYSQL_USER}
+      ZT_MYSQL_PASSWORD: ${ZENTAO_MYSQL_PASSWORD}
+      ZT_MYSQL_DB: ${ZENTAO_MYSQL_DB}
+      # 从21.3版本开始，如果已经设置了redis相关环境变量自动开启redis session缓存，可不用配置如下环境变量
+      PHP_SESSION_TYPE: redis
+      PHP_SESSION_PATH: tcp://${ZENTAO_REDIS_HOST}:${ZENTAO_REDIS_PORT}?auth=${ZENTAO_REDIS_PASSWORD}
+      PHP_EXT_REDIS: true
+      PHP_SESSION_REDIS_DATABASE: 6 # 如果session是redis默认使用6, session database和cache database不要复用
+      # end
+      ZT_REDIS_HOST: ${ZENTAO_REDIS_HOST}
+      ZT_REDIS_PORT: ${ZENTAO_REDIS_PORT}
+      ZT_REDIS_PASSWORD: ${ZENTAO_REDIS_PASSWORD}
+      ZT_REDIS_SERIALIZER: igbinary # php, igbinary
+      # - ZT_REDIS_DATABASE=0 # 默认禅道为0
+      ZT_CACHE_ENABLE: true
+      ZT_CACHE_TYPE: redis
+      ZT_CACHE_SCOPE: private
+      ZT_CACHE_LIFETIME: 0
+      PHP_MAX_EXECUTION_TIME: 120
+      PHP_MEMORY_LIMIT: 1024M
+      PHP_POST_MAX_SIZE: 512M
+      PHP_UPLOAD_MAX_FILESIZE: 512M
+    networks:
+      backend:
+        ipv4_address: ${ZENTAO_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/index.php"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s

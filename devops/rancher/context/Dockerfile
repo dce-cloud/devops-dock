@@ -1,0 +1,7 @@
+ARG DOCKER_REGISTRY_URL=
+ARG RANCHER_VERSION=stable
+FROM ${DOCKER_REGISTRY_URL}rancher.rancher:${RANCHER_VERSION}
+
+LABEL maintainer="zaizai <373045134@qq.com>"
+
+ENV TZ=Asia/Shanghai

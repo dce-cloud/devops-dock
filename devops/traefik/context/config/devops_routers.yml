@@ -1,0 +1,46 @@
+#### Jenkins ####
+
+JenkinsRouterAnchor: &JenkinsRouterAnchor
+  rule: "Host(`jenkins.devops.top`)"
+  service: JenkinsSvc
+  middlewares:
+
+#### Sonarqube ####
+
+SonarqubeRouterAnchor: &SonarqubeRouterAnchor
+  rule: "Host(`sonarqube.devops.top`)"
+  service: SonarqubeSvc
+  middlewares:
+
+#### Http ####
+
+http:
+  services:
+    JenkinsSvc:
+      loadBalancer:
+        servers:
+          - url: "http://jenkins:8080"
+    SonarqubeSvc:
+      loadBalancer:
+        servers:
+          - url: "http://sonarqube:9000"
+
+  middlewares:
+
+  routers:
+
+    #### jenkins ####
+
+    JenkinsHttp:
+      <<: *JenkinsRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### Sonarqube ####
+
+    SonarqubeHttp:
+      <<: *SonarqubeRouterAnchor
+      entryPoints:
+        - web
+      priority: 100

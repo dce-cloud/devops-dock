@@ -1,0 +1,36 @@
+#### Gitlab ####
+
+GitlabRouterAnchor: &GitlabRouterAnchor
+  rule: "Host(`gitlab.devops.top`)"
+  service: GitlabSvc
+  middlewares:
+
+#### Http ####
+
+http:
+  services:
+    GitlabSvc:
+      loadBalancer:
+        servers:
+          - url: "http://gitlab:80"
+    # GitlabSshSvc:
+    #   loadBalancer:
+    #     servers:
+    #       - url: "http://gitlab:22"
+
+
+  middlewares:
+
+  routers:
+    GitlabHttp:
+      <<: *GitlabRouterAnchor
+      entryPoints:
+        - web
+
+    # GitlabSsh:
+    #   entryPoints:
+    #     - ssh
+    #   rule: "HostSNI(`*`)"
+    #   service: GitlabSshSvc
+    #   middlewares:
+    

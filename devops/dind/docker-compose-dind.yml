@@ -1,0 +1,40 @@
+volumes:
+  dind-data:
+    driver: ${VOLUMES_DRIVER}
+  dind-certs-client:
+    driver: ${VOLUMES_DRIVER}
+  dind-certs-ca:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### Dind ################################################
+  dind:
+    build:
+      context: ${DIND_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        DIND_VERSION: ${DIND_VERSION}
+    container_name: ${DIND_CONTAINER_NAME}
+    hostname: ${DIND_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    privileged: true
+    user: root
+    environment:
+      TZ: ${TZ}
+      DOCKER_TLS_CERTDIR: /certs
+      DOCKER_BUILDKIT: 1
+    volumes:
+      - dind-data:/var/lib/docker
+      - dind-certs-client:/certs/client
+      - dind-certs-ca:/certs/ca
+      - jenkins-data:/var/jenkins_home
+    networks:
+      backend:
+        ipv4_address: ${DIND_BACKEND_IP}
+    healthcheck:
+      test: ["CMD-SHELL", "docker ps >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

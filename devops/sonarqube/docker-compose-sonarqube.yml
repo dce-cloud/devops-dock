@@ -1,0 +1,36 @@
+volumes:
+  sonarqube-data:
+    driver: ${VOLUMES_DRIVER}
+  sonarqube-log:
+    driver: ${VOLUMES_DRIVER}
+  sonarqube_extensions:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### Sonarqube ################################################
+  sonarqube:
+    build:
+      context: ${SONARQUBE_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        SONARQUBE_VERSION: ${SONARQUBE_VERSION}
+    container_name: ${SONARQUBE_CONTAINER_NAME}
+    hostname: ${SONARQUBE_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    environment:
+      TZ: ${TZ}
+      SONAR_JDBC_USERNAME: ${SONARQUBE_POSTGRES_USER}
+      SONAR_JDBC_PASSWORD: ${SONARQUBE_POSTGRES_PASSWORD}
+      SONAR_JDBC_URL: jdbc:postgresql://${SONARQUBE_POSTGRES_HOST}:5432/${SONARQUBE_POSTGRES_DB}
+      SONAR_AUTH_JWTBASE64HS256SECRET: ${SONAR_AUTH_JWTBASE64HS256SECRET}
+      SONAR_UPDATE_CENTER_URL: https://update.sonarsource.org/update-center.properties
+      SONAR_PLUGIN_MANAGER_REPOSITORY_URL: https://maven.aliyun.com/repository/public
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: true
+    volumes:
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-log:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      backend:
+        ipv4_address: ${SONARQUBE_BACKEND_IP}

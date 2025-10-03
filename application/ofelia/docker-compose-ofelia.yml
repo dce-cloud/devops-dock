@@ -1,0 +1,26 @@
+services:
+### OFELIA ##############################################
+  ofelia:
+    build:
+      context: ${OFELIA_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        OFELIA_VERSION: ${OFELIA_VERSION}
+    container_name: ${OFELIA_CONTAINER_NAME}
+    hostname: ${OFELIA_HOSTNAME}
+    command: "daemon --config=/etc/ofelia/config.ini"
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - ${DOCKER_SOCK_HOST_PATH}:/var/run/docker.sock:ro
+      - ${OFELIA_HOST_PATH}/config.ini:/etc/ofelia/config.ini:ro
+    environment:
+      TZ: ${TZ}
+    networks:
+      backend:
+        ipv4_address: ${OFELIA_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "test", "-d", "/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s

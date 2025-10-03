@@ -1,0 +1,3 @@
+include:
+  - ../docker-compose-network.yml
+  - ./traefik-whoami/docker-compose-traefik-whoami.yml

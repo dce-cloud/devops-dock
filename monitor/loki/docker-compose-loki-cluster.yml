@@ -1,0 +1,90 @@
+volumes:
+  loki-read-data:
+    driver: ${VOLUMES_DRIVER}
+  loki-write-data:
+    driver: ${VOLUMES_DRIVER}
+  loki-backend-data:
+    driver: ${VOLUMES_DRIVER}
+
+x-loki-healthcheck: &loki-healthcheck
+    test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1" ]
+    interval: 15s
+    timeout: 5s
+    retries: 5
+    start_period: 10s
+
+x-loki-environment: &loki-environment
+    TZ: ${TZ}
+    LOKI_READ_CONTAINER_NAME: ${LOKI_READ_CONTAINER_NAME}
+    LOKI_WRITE_CONTAINER_NAME: ${LOKI_WRITE_CONTAINER_NAME}
+    LOKI_BACKEND_CONTAINER_NAME: ${LOKI_BACKEND_CONTAINER_NAME}
+    LOKI_ALI_OSS_BUCKET: ${LOKI_ALI_OSS_BUCKET}
+    LOKI_ALI_OSS_ENDPOINT: ${LOKI_ALI_OSS_ENDPOINT}
+    LOKI_ALI_OSS_ACCESS_KEY_ID: ${LOKI_ALI_OSS_ACCESS_KEY_ID}
+    LOKI_ALI_OSS_ACCESS_KEY: ${LOKI_ALI_OSS_ACCESS_KEY}
+    LOKI_RUSTFS_BUCKET: ${LOKI_RUSTFS_BUCKET}
+    LOKI_RUSTFS_ENDPOINT: ${LOKI_RUSTFS_ENDPOINT}
+    LOKI_RUSTFS_ACCESS_KEY_ID: ${LOKI_RUSTFS_ACCESS_KEY_ID}
+    LOKI_RUSTFS_ACCESS_KEY: ${LOKI_RUSTFS_ACCESS_KEY}
+    
+services:
+
+### Loki Read ############################################
+  loki-read:
+    build:
+      context: ${LOKI_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        LOKI_VERSION: ${LOKI_VERSION}
+    container_name: ${LOKI_READ_CONTAINER_NAME}
+    hostname: ${LOKI_READ_HOSTNAME}
+    command: "-config.file=/etc/loki/loki-config.yaml -config.expand-env=true -target=read"
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - loki-read-data:/data/loki
+      - ${LOKI_HOST_PATH}/configs/loki-cluster.yaml:/etc/loki/loki-config.yaml
+    networks:
+      backend:
+        ipv4_address: ${LOKI_READ_BACKEND_IP}
+    environment: *loki-environment
+    healthcheck: *loki-healthcheck
+
+### Loki Write ############################################
+  loki-write:
+    build:
+      context: ${LOKI_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        LOKI_VERSION: ${LOKI_VERSION}
+    container_name: ${LOKI_WRITE_CONTAINER_NAME}
+    hostname: ${LOKI_WRITE_HOSTNAME}
+    command: "-config.file=/etc/loki/loki-config.yaml -config.expand-env=true -target=write"
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - loki-write-data:/data/loki
+      - ${LOKI_HOST_PATH}/configs/loki-cluster.yaml:/etc/loki/loki-config.yaml
+    networks:
+      backend:
+        ipv4_address: ${LOKI_WRITE_BACKEND_IP}
+    environment: *loki-environment
+    healthcheck: *loki-healthcheck
+
+### Loki Backend ############################################
+  loki-backend:
+    build:
+      context: ${LOKI_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        LOKI_VERSION: ${LOKI_VERSION}
+    container_name: ${LOKI_BACKEND_CONTAINER_NAME}
+    hostname: ${LOKI_BACKEND_HOSTNAME}
+    command: "-config.file=/etc/loki/loki-config.yaml -config.expand-env=true -target=backend -legacy-read-mode=false"
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - loki-backend-data:/data/loki
+      - ${LOKI_HOST_PATH}/configs/loki-cluster.yaml:/etc/loki/loki-config.yaml
+    networks:
+      backend:
+        ipv4_address: ${LOKI_BACKEND_BACKEND_IP}
+    environment: *loki-environment
+    healthcheck: *loki-healthcheck

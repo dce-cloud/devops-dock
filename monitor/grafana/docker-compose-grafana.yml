@@ -1,0 +1,37 @@
+volumes:
+  grafana-data:
+    driver: ${VOLUMES_DRIVER}
+
+secrets:
+  grafana_admin_password:
+    file: ${GRAFANA_HOST_PATH}/admin_password
+
+services:
+
+### GRAFANA ############################################
+  grafana:
+    build:
+      context: ${GRAFANA_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        GRAFANA_VERSION: ${GRAFANA_VERSION}
+    container_name: ${GRAFANA_CONTAINER_NAME}
+    hostname: ${GRAFANA_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ${GRAFANA_HOST_PATH}/configs/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+    secrets:
+      - source: grafana_admin_password
+        target: admin_password
+    networks:
+      backend:
+        ipv4_address: ${GRAFANA_BACKEND_IP}
+    environment:
+      TZ: ${TZ}
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

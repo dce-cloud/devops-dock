@@ -1,0 +1,53 @@
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /certs/devops.top/devops.top.pem
+        keyFile: /certs/devops.top/devops.top.key
+        
+  certificates:
+    - certFile: /certs/devops.top/devops.top.pem
+      keyFile: /certs/devops.top/devops.top.key
+      stores:
+        - default
+
+RedirectHttpToHttpsRouterAnchor: &RedirectHttpToHttpsRouterAnchor
+  entryPoints:
+    - web
+  priority: 2000
+  middlewares:
+    - redirectToHttps
+  service: noop@internal
+        
+http:
+  middlewares:
+    cors:
+      headers:
+        accessControlAllowOriginListRegex: 
+          - "^https?://([a-zA-Z0-9-]+\\.)*devops\\.top$"
+        accessControlAllowHeaders: ""
+        accessControlAllowMethods: "GET,POST,PUT,DELETE,OPTIONS,PATCH"
+        accessControlAllowCredentials: true
+        accessControlMaxAge: 1728000
+        browserXssFilter: true
+        addVaryHeader: true
+        contentTypeNosniff: false
+
+    hsts:
+      headers:
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        forceSTSHeader: true
+        contentSecurityPolicy: "default-src 'self'"
+        referrerPolicy: "strict-origin-when-cross-origin"
+
+    redirectToHttps:
+      redirectScheme:
+        scheme: https
+        permanent: true
+        port: "443"
+        
+  routers:
+    RedirectHttpToHttps:
+      <<: *RedirectHttpToHttpsRouterAnchor
+      rule: "HostRegexp(`^(domain)\\.devops\\.top$`)"

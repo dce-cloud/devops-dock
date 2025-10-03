@@ -1,0 +1,7 @@
+ARG DOCKER_REGISTRY_URL=
+ARG MINIO_VERSION=latest
+FROM ${DOCKER_REGISTRY_URL}minio.minio:${MINIO_VERSION}
+
+LABEL maintainer="zaizai <373045134@qq.com>"
+
+ENV TZ=Asia/Shanghai

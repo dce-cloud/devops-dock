@@ -1,0 +1,47 @@
+x-yapi-environment: &x-yapi-environment
+  TZ: ${TZ}
+
+services:
+### YAPI ##############################################
+  yapi:
+    build:
+      context: ${YAPI_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        YAPI_VERSION: ${YAPI_VERSION}
+    container_name: ${YAPI_CONTAINER_NAME}
+    hostname: ${YAPI_HOSTNAME}
+    command: "node server/app.js"
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - ${YAPI_HOST_PATH}/config.json:/yapi/config.json
+    environment: *x-yapi-environment
+    networks:
+      backend:
+        ipv4_address: ${YAPI_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3008"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    depends_on:
+      yapi-init:
+        condition: service_completed_successfully
+
+  yapi-init:
+    build:
+      context: ${YAPI_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        YAPI_VERSION: ${YAPI_VERSION}
+    container_name: ${YAPI_CONTAINER_NAME}-init
+    hostname: ${YAPI_HOSTNAME}-init
+    command: "node --unhandled-rejections=strict server/install.js"
+    restart: no
+    volumes:
+      - ${YAPI_HOST_PATH}/config.json:/yapi/config.json
+    environment: *x-yapi-environment
+    networks:
+      backend:
+        ipv4_address: ${YAPI_INIT_BACKEND_IP}

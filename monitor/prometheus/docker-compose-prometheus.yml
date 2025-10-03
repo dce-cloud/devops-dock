@@ -1,0 +1,21 @@
+services:
+
+### Prometheus ############################################
+  prometheus:
+    build:
+      context: ${PROMETHEUS_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        PROMETHEUS_VERSION: ${PROMETHEUS_VERSION}
+    container_name: ${PROMETHEUS_CONTAINER_NAME}
+    hostname: ${PROMETHEUS_HOSTNAME}
+    command:
+      - --web.enable-remote-write-receiver
+      - --config.file=/etc/prometheus/prometheus.yml
+    restart: ${DOCKER_RESTART_POLICY}
+    environment:
+      TZ: ${TZ}
+    networks:
+      backend:
+        ipv4_address: ${PROMETHEUS_BACKEND_IP
+        

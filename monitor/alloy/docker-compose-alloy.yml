@@ -1,0 +1,30 @@
+services:
+
+### alloy ############################################
+  alloy:
+    build:
+      context: ${ALLOY_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        ALLOY_VERSION: ${ALLOY_VERSION}
+    container_name: ${ALLOY_CONTAINER_NAME}
+    hostname: ${ALLOY_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    command: "run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy"
+    volumes:
+      - ${ALLOY_HOST_PATH}/configs/config.alloy:/etc/alloy/config.alloy:ro
+      - ${DOCKER_SOCK_HOST_PATH}:/var/run/docker.sock:ro
+    extra_hosts:
+      - "${HOST_DOCKER_INTERNAL}:${HOST_GATEWAY}"
+      - "${NGINX_CONTAINER_NAME}:${NGINX_BACKEND_IP}"
+    networks:
+      backend:
+        ipv4_address: ${ALLOY_BACKEND_IP}
+    environment:
+      TZ: ${TZ}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:12345/-/healthy"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

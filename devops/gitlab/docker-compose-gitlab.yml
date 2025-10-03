@@ -1,0 +1,55 @@
+volumes:
+  gitlab-data:
+    driver: ${VOLUMES_DRIVER}
+  gitlab-config:
+    driver: ${VOLUMES_DRIVER}
+
+configs:
+  gitlab_rb:
+    file: ${GITLAB_HOST_PATH}/gitlab.rb
+secrets:
+  gitlab_admin_password:
+    file: ${GITLAB_HOST_PATH}/admin_password
+
+services:
+
+### Gitlab ################################################
+  gitlab:
+    build:
+      context: ${GITLAB_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        GITLAB_VERSION: ${GITLAB_VERSION}
+    container_name: ${GITLAB_CONTAINER_NAME}
+    hostname: ${GITLAB_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    environment:
+      TZ: ${TZ}
+      GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
+      GITLAB_POSTGRES_HOST: ${GITLAB_POSTGRES_HOST}
+      GITLAB_POSTGRES_USER: ${GITLAB_POSTGRES_USER}
+      GITLAB_POSTGRES_PASSWORD: ${GITLAB_POSTGRES_PASSWORD}
+      GITLAB_POSTGRES_DB: ${GITLAB_POSTGRES_DB}
+      GITLAB_REDIS_HOST: ${GITLAB_REDIS_HOST}
+      GITLAB_REDIS_DATABASE: ${GITLAB_REDIS_DATABASE}
+      GITLAB_REDIS_PORT: ${GITLAB_REDIS_PORT}
+      GITLAB_REDIS_PASSWORD: ${GITLAB_REDIS_PASSWORD}
+    volumes:
+      - gitlab-data:/var/opt/gitlab
+      - gitlab-config:/etc/gitlab
+    configs:
+      - source: gitlab_rb
+        target: /omnibus_config.rb
+    secrets:
+      - source: gitlab_admin_password
+        target: admin_password
+    shm_size: '2gb'
+    networks:
+      backend:
+        ipv4_address: ${GITLAB_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

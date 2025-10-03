@@ -1,0 +1,16 @@
+parsers:
+  - name: docker
+    format: regex
+    # 匹配Docker日志格式：时间戳 + 流类型(stdout/stderr) + 日志标签 + 消息内容
+    regex: '^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<message>.*)$'
+    time_key: time
+    time_format: "%Y-%m-%dT%H:%M:%S.%L"
+    time_keep: true
+    time_zone: UTC
+    # 关键：使用remove_ansi过滤器清理消息中的ANSI颜色代码
+    types: message:remove_ansi
+  - name: json
+    format: json
+    time_key: time
+    time_format: "%Y-%m-%dT%H:%M:%S.%L"
+    reserve_data: true

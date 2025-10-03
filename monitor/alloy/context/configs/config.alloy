@@ -1,0 +1,62 @@
+logging {
+  level  = "debug"
+  format = "json"
+}
+
+livedebugging {
+  enabled = true
+}
+
+discovery.docker "docker_container_scrape" {
+	host             = "unix:///var/run/docker.sock"
+	refresh_interval = "5s"
+}
+
+discovery.relabel "docker_container_scrape" {
+	targets = []
+
+	// 这一段不能去掉，service_name标签引用了此处
+	rule {
+		source_labels = ["__meta_docker_container_name"]
+		regex         = "/(.*)"
+		target_label  = "service_name"
+	}
+
+	// 生成 namespace 标签
+	rule {
+		source_labels = ["__meta_docker_container_label_service_namespace"]
+		target_label = "devops_namespace"
+	}
+
+	// 生成 project_tag 标签
+	rule {
+		source_labels = ["__meta_docker_container_label_service_project_tag"]
+		target_label = "devops_job"
+	}
+}
+
+loki.source.docker "docker_container_scrape" {
+	host             = "unix:///var/run/docker.sock"
+	targets          = discovery.docker.docker_container_scrape.targets
+	forward_to       = [loki.process.rate_limit.receiver ]
+	relabel_rules    = discovery.relabel.docker_container_scrape.rules
+	refresh_interval = "5s"
+}
+
+loki.process "rate_limit" {
+	stage.limit {
+		burst = 3000
+		rate  = 1000
+	}
+
+	forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+	endpoint {
+		url       = "http://nginx:3100/loki/api/v1/push"
+		tenant_id = "zhiniu"
+	}
+
+	external_labels = {}
+}

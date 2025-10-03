@@ -1,0 +1,26 @@
+services:
+
+### fluent-bit ############################################
+
+  fluentbit:
+    build:
+      context: ${FLUENTBIT_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        FLUENTBIT_VERSION: ${FLUENTBIT_VERSION}
+    container_name: ${FLUENTBIT_CONTAINER_NAME}
+    hostname: ${FLUENTBIT_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    command: "/fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.yaml"
+    volumes:
+      - ${FLUENTBIT_HOST_PATH}/configs:/fluent-bit/etc
+      - ${DOCKER_SOCK_HOST_PATH}:/var/run/docker.sock:ro
+      - ${DOCKER_CONTAINERS_HOST_PATH}:/var/lib/docker/containers:ro
+      - "${DATA_LOG_HOST_PATH}:/var/log/devops:ro"
+    environment:
+      TZ: ${TZ}
+    networks:
+      backend:
+        ipv4_address: ${FLUENTBIT_BACKEND_IP}
+    depends_on:
+      - ${LOKI_CONTAINER_NAME}

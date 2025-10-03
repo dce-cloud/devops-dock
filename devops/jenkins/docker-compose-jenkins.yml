@@ -1,0 +1,38 @@
+volumes:
+  jenkins-data:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### Jenkins ################################################
+  jenkins:
+    build:
+      context: ${JENKINS_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        JENKINS_VERSION: ${JENKINS_VERSION}
+    container_name: ${JENKINS_CONTAINER_NAME}
+    hostname: ${JENKINS_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    extra_hosts:
+      - "${HOST_DOCKER_INTERNAL}:${HOST_GATEWAY}"
+    environment:
+      JAVA_OPTS: "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Duser.timezone=GMT+08"
+      DOCKER_CERT_PATH: "/certs/client"
+      DOCKER_HOST: ${JENKINS_DOCKER_HOST}
+      CASC_JENKINS_CONFIG: "/var/jenkins_home/casc_configs"
+      DOCKER_TLS_VERIFY: 1
+      DOCKER_BUILDKIT: 1
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - dind-certs-client:/certs/client:ro
+      - ${JENKINS_HOST_PATH}/casc_configs:/var/jenkins_home/casc_configs:ro
+    networks:
+      backend:
+        ipv4_address: ${JENKINS_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-s", "http://localhost:8080/login", "-o", "/dev/null", "-w", "%{http_code}"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

@@ -1,0 +1,27 @@
+volumes:
+  rustfs-data:
+    driver: ${VOLUMES_DRIVER}
+  rustfs-logs:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+### RUSTFS ##############################################
+  rustfs:
+    build:
+      context: ${RUSTFS_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        RUSTFS_VERSION: ${RUSTFS_VERSION}
+    container_name: ${RUSTFS_CONTAINER_NAME}
+    hostname: ${RUSTFS_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - rustfs-data:/data
+      - rustfs-logs:/logs
+    environment:
+      TZ: ${TZ}
+      RUSTFS_ACCESS_KEY: ${RUSTFS_ACCESS_KEY}
+      RUSTFS_SECRET_KEY: ${RUSTFS_SECRET_KEY}
+    networks:
+      backend:
+        ipv4_address: ${RUSTFS_BACKEND_IP}

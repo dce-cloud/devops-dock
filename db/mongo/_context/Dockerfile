@@ -1,0 +1,7 @@
+ARG DOCKER_REGISTRY_URL=
+ARG MONGO_VERSION=8.0-noble
+FROM ${DOCKER_REGISTRY_URL}mongo:${MONGO_VERSION}
+
+LABEL maintainer="zaizai <373045134@qq.com>"
+
+ENV TZ=Asia/Shanghai

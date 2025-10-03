@@ -1,0 +1,47 @@
+{{ $containerHost := "app" }}
+{{ $wildcardDomain := "*.devops.top" }}
+{{ $namespaceList := list "a" "b" }}
+{{ $project := "app" }}
+{{ $domainList := list "a-1.devops.top,a-2.devops.top" "b-1.devops.top,b-2.devops.top" }}
+
+#### Http ####
+
+http:
+  services:
+    {{ range $namespace := $namespaceList }}
+    {{ $namespace }}{{ $project }}Svc:
+      loadBalancer:
+        servers:
+          - url: "http://{{ $namespace }}-{{ $containerHost }}:80"
+    {{ end }}
+
+  middlewares:
+  routers:
+  {{ range $index, $namespace := $namespaceList }}
+  {{ $domains := (split (index $domainList $index) ",") }}
+
+    {{ $namespace }}{{ $project }}AdminHttp:
+      rule: "{{ range $i, $domain := $domains }}{{ if $i }} || {{ end }}Host(`{{ $domain }}`){{ end }}"
+      service: {{ $namespace }}{{ $project }}Svc
+      middlewares:
+        - cors@file
+      entryPoints:
+        - web
+      priority: 100
+    
+    {{ $namespace }}{{ $project }}AdminHttps:
+      rule: "{{ range $i, $domain := $domains }}{{ if $i }} || {{ end }}Host(`{{ $domain }}`){{ end }}"
+      service: {{ $namespace }}{{ $project }}Svc
+      middlewares:
+        - cors@file
+      entryPoints:
+        - websecure
+      priority: 100
+      tls:
+        domains:
+        {{ range $domain := $adminDomains }}
+          - main: "{{ $domain }}"
+            sans:
+              - "{{ $wildcardDomain }}"
+        {{ end }}
+    {{ end }}

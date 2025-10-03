@@ -1,0 +1,30 @@
+volumes:
+  ninedata-data:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### NINEDATA ################################################
+  ninedata:
+    build:
+      context: ${NINEDATA_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        NINEDATA_VERSION: ${NINEDATA_VERSION}
+    hostname: ${NINEDATA_HOSTNAME}
+    container_name: ${NINEDATA_CONTAINER_NAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    cgroup: "host"
+    privileged: true
+    volumes:
+      - "ninedata-data:/u01"
+    ports:
+      - "${NINEDATA_HOST_PORT}:9999"
+    environment:
+      TZ: "${TZ}"
+      META_DB: "${NINEDATA_META_DB}"
+    networks:
+      backend:
+        ipv4_address: ${NINEDATA_BACKEND_IP}
+    depends_on:
+      - ${MYSQL8_CONTAINER_NAME}

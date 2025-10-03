@@ -1,0 +1,27 @@
+#### Traefik Dashboard ####
+
+TraefikDashboardRouterAnchor: &TraefikDashboardRouterAnchor
+  rule: "Host(`gateway.devops.top`)"
+  service: api@internal
+  middlewares:
+    - cors@file
+    - traefikDashboard
+
+#### Http ####
+
+http:
+  middlewares:
+    traefikDashboard:
+      basicAuth:
+        usersFile: /run/secrets/traefik_basicauth_users
+
+  routers:
+  
+    #### traefik dashboard ####
+    
+    TraefikDashboardHttp:
+      <<: *TraefikDashboardRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+        

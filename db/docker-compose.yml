@@ -1,0 +1,7 @@
+include:
+  - ../docker-compose-network.yml
+  - ./mysql/docker-compose-mysql.yml
+  - ./redis/docker-compose-redis.yml
+  - ./ninedata/docker-compose-ninedata.yml
+  - ./postgres/docker-compose-postgres.yml
+  - ./mongo/docker-compose-mongo.yml

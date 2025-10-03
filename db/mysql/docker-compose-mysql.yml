@@ -1,0 +1,155 @@
+volumes:
+  mysql57-data:
+    driver: ${VOLUMES_DRIVER}
+  mysql57-log:
+    driver: ${VOLUMES_DRIVER}
+  mysql8-data:
+    driver: ${VOLUMES_DRIVER}
+  mysql8-log:
+    driver: ${VOLUMES_DRIVER}
+  liyue-mysql-data:
+    driver: ${VOLUMES_DRIVER}
+  liyue-mysql-log:
+    driver: ${VOLUMES_DRIVER}
+  qingqiu-mysql-data:
+    driver: ${VOLUMES_DRIVER}
+  qingqiu-mysql-log:
+    driver: ${VOLUMES_DRIVER}
+
+x-mysql-environment: &mysql-environment
+    TZ: "${TZ}"
+    ALLOW_EMPTY_PASSWORD: "yes"
+    MYSQL_AUTHENTICATION_PLUGIN: "mysql_native_password"
+    MYSQL_CHARACTER_SET: "utf8mb4"
+    MYSQL_COLLATE: "utf8mb4_bin"
+    MYSQL_REPLICATION_MODE: "master"
+    MYSQL_ENABLE_SLOW_QUERY: "1"
+    MYSQL_LONG_QUERY_TIME: "1.0"
+
+x-mysql57-environment: &mysql57-environment
+    <<: *mysql-environment
+    MYSQL_EXTRA_FLAGS: "--secure-file-priv=/bitnami/mysql/secure-files/ --expire-logs-days=7 --default-time-zone=+8:00 --max-allowed-packet=100M --log-timestamps=system --innodb-use-native-aio=0 --tls-version=TLSv1.2,TLSv1.3"
+    MYSQL_SQL_MODE: "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+
+x-mysql8-environment: &mysql8-environment
+    <<: *mysql-environment
+    MYSQL_EXTRA_FLAGS: "--secure-file-priv=/bitnami/mysql/secure-files/ --binlog-expire-logs-seconds=604800 --default-time-zone=+8:00 --max-allowed-packet=100M --log-timestamps=system --innodb-use-native-aio=0 --tls-version=TLSv1.2,TLSv1.3"
+    MYSQL_SQL_MODE: "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
+
+x-mysql-healthcheck: &mysql-healthcheck
+    test: ['CMD', '/opt/bitnami/scripts/mysql/healthcheck.sh']
+    interval: 15s
+    timeout: 5s
+    retries: 5
+    start_period: 10s
+
+services:
+
+### Mysql57 ################################################
+  mysql57:
+    build:
+      context: ${MYSQL57_HOST_PATH}
+      dockerfile: ./_context/Dockerfile-5.7
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+    hostname: ${MYSQL57_HOSTNAME}
+    container_name: ${MYSQL57_CONTAINER_NAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - "mysql57-data:/bitnami/mysql/data"
+      - "mysql57-log:/opt/bitnami/mysql/logs"
+      - "./mysql57/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - "${MYSQL57_HOST_PORT}:3306"
+    environment:
+      <<: *mysql57-environment
+      MYSQL_DATABASE: "${MYSQL57_DATABASE}"
+      MYSQL_USER: "${MYSQL57_USER}"
+      MYSQL_PASSWORD: "${MYSQL57_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL57_ROOT_PASSWORD}"
+    networks:
+      backend:
+        ipv4_address: ${MYSQL57_BACKEND_IP}
+    healthcheck: *mysql-healthcheck
+
+### Mysql8 ################################################
+  mysql8:
+    build:
+      context: ${MYSQL8_HOST_PATH}
+      dockerfile: ./_context/Dockerfile-8
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+    hostname: ${MYSQL8_HOSTNAME}
+    container_name: ${MYSQL8_CONTAINER_NAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - "mysql8-data:/bitnami/mysql/data"
+      - "mysql8-log:/opt/bitnami/mysql/logs"
+      - "./mysql8/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - "${MYSQL8_HOST_PORT}:3306"
+    environment:
+      <<: *mysql8-environment
+      MYSQL_SQL_MODE: "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
+      MYSQL_DATABASE: "${MYSQL8_DATABASE}"
+      MYSQL_USER: "${MYSQL8_USER}"
+      MYSQL_PASSWORD: "${MYSQL8_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL8_ROOT_PASSWORD}"
+    networks:
+      backend:
+        ipv4_address: ${MYSQL8_BACKEND_IP}
+    healthcheck: *mysql-healthcheck
+
+### LIYUE Mysql ################################################
+  liyue-mysql:
+    build:
+      context: ${LIYUE_MYSQL_HOST_PATH}
+      dockerfile: ./_context/Dockerfile-5.7
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+    hostname: ${LIYUE_MYSQL_HOSTNAME}
+    container_name: ${LIYUE_MYSQL_CONTAINER_NAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - "liyue-mysql-data:/bitnami/mysql/data"
+      - "liyue-mysql-log:/opt/bitnami/mysql/logs"
+      - "./liyue/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - "${LIYUE_MYSQL_HOST_PORT}:3306"
+    environment:
+      <<: *mysql57-environment
+      MYSQL_DATABASE: "${LIYUE_MYSQL_DATABASE}"
+      MYSQL_USER: "${LIYUE_MYSQL_USER}"
+      MYSQL_PASSWORD: "${LIYUE_MYSQL_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${LIYUE_MYSQL_ROOT_PASSWORD}"
+    networks:
+      backend:
+        ipv4_address: ${LIYUE_MYSQL_BACKEND_IP}
+    healthcheck: *mysql-healthcheck
+
+### QINGQIU Mysql ################################################
+  qingqiu-mysql:
+    build:
+      context: ${QINGQIU_MYSQL_HOST_PATH}
+      dockerfile: ./_context/Dockerfile-5.7
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+    hostname: ${QINGQIU_MYSQL_HOSTNAME}
+    container_name: ${QINGQIU_MYSQL_CONTAINER_NAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - "qingqiu-mysql-data:/bitnami/mysql/data"
+      - "qingqiu-mysql-log:/opt/bitnami/mysql/logs"
+      - "./qingqiu/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - "${QINGQIU_MYSQL_HOST_PORT}:3306"
+    environment:
+      <<: *mysql57-environment
+      MYSQL_DATABASE: "${QINGQIU_MYSQL_DATABASE}"
+      MYSQL_USER: "${QINGQIU_MYSQL_USER}"
+      MYSQL_PASSWORD: "${QINGQIU_MYSQL_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${QINGQIU_MYSQL_ROOT_PASSWORD}"
+    networks:
+      backend:
+        ipv4_address: ${QINGQIU_MYSQL_BACKEND_IP}
+    healthcheck: *mysql-healthcheck
