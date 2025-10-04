@@ -33,8 +33,8 @@
 ## application (172.25.50.60~172.25.50.80)
 | status | service | backend ip | version | 备注 |
 | --- | ---| --- | --- | --- |
-| &check; | traefik-whoami | 172.25.50.60 | latest | |
-| &check; | traefik-whoami2 | 172.25.50.61 | latest | |
+| &check; | whoami1 | 172.25.50.60 | latest | |
+| &check; | whoami2 | 172.25.50.61 | latest | |
 | &check; | ofelia | 172.25.50.62 | 0.3.18 | 用来执行定时任务(针对容器) |
 | &cross; | zentao | 172.25.50.63 | latest | |
 | &cross; | yapi | 172.25.50.64 | 1.12.0 | |
