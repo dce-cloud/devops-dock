@@ -12,10 +12,6 @@ entryPoints:
     address: ":22"
   traefik:
     address: ":8082"
-  phpInnerApi:
-    address: ":8242"
-  phpRpc:
-    address: ":8383"
 
 providers:
   docker:
