@@ -5,7 +5,7 @@ const root_user_config = {
 
 const yapi_user_config = {
   user: 'yapi',
-  password: '123456',
+  password: 'gfJtkSK5SIkukf0hcfb7kt9e',
   db: 'yapi'
 }
 
