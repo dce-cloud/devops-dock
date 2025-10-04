@@ -22,7 +22,7 @@
 | --- | ---| --- | --- | --- |
 | &check; | jenkins | 172.25.50.40 | alpine3.22-jdk17 | 使用jdk17 |
 | &check; | dind | 172.25.50.41 | 28.3.0-dind-alpine3.22 | |
-| &check; | sonarqube | 172.25.50.42 | latest | |
+| &cross; | sonarqube | 172.25.50.42 | latest | |
 | &cross; | vault | 172.25.50.43 | 1.20 | |
 
 ### gateway (172.25.50.80~172.25.50.100)
@@ -32,6 +32,8 @@
 | &check; | nginx | 172.25.50.81 | 1.29-alpine | |
 
 ### db (172.25.50.101~172.25.50.120)
+| status | service | backend ip | version | 备注 |
+| --- | ---| --- | --- | --- |
 | &check; | mysql57 | 172.25.50.101 | mysql8.4 | |
 | &check; | mysql | 172.25.50.102 | mysql8.4 | |
 | &check; | redis | 172.25.50.103 | redis8.0.3 | |
@@ -42,14 +44,14 @@
 ### storage (172.25.51.40~172.25.51.60)
 | status | service | backend ip | version | 备注 |
 | --- | ---| --- | --- | --- |
-| &check; | minio | 172.25.51.40 | RELEASE.2025-04-22T22-12-26Z-cpuv1 | |
-| &check; | rustfs | 172.25.51.41 | latest | |
+| &cross; | minio | 172.25.51.40 | RELEASE.2025-04-22T22-12-26Z-cpuv1 | |
+| &cross; | rustfs | 172.25.51.41 | latest | |
 
 ### monitor (172.25.51.70~172.25.51.90)
 | status | service | backend ip | version | 备注 |
 | --- | ---| --- | --- | --- |
 | &check; | portainer | 172.25.51.70 | 2.25.1-alpine | 127.0.0.1:19000 打开控制台 |
-| &check; | rancher | 172.25.51.71 | latest | |
+| &cross; | rancher | 172.25.51.71 | latest | |
 
 ## monitor (172.25.52.3~172.25.52.30)
 | status | service | backend ip | version | 备注 |
@@ -59,8 +61,8 @@
 | &check; | loki-write | 172.26.3.86 | 3 | |
 | &check; | loki-backend | 172.26.3.87 | 3 | |
 | &check; | grafana | 172.26.3.88 | 12.0.2 | |
-| &check; | Prometheus | 172.26.3.90 | | |
-| &check; | fluentbit | 172.26.3.91 | 4.0.4 | |
+| &cross; | Prometheus | 172.26.3.90 | | |
+| &cross; | fluentbit | 172.26.3.91 | 4.0.4 | |
 
 ## application (172.25.53.3~172.25.53.120)
 | status | service | backend ip | version | 备注 |
