@@ -1,5 +1,5 @@
 ARG DOCKER_REGISTRY_URL=
-FROM ${DOCKER_REGISTRY_URL}jayfong.yapi:latest
+FROM ${DOCKER_REGISTRY_URL}jayfong/yapi:latest
 
 LABEL maintainer="zaizai <373045134@qq.com>"
 

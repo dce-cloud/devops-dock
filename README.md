@@ -41,39 +41,39 @@
 | &check; | mongo4 | 172.25.50.105 | 4.4 | |
 | &check; | mongo | 172.25.50.106 | 8.0 | |
 
-### storage (172.25.51.40~172.25.51.60)
+### storage (172.25.51.3~172.25.51.20)
 | status | service | backend ip | version | 备注 |
 | --- | ---| --- | --- | --- |
-| &cross; | minio | 172.25.51.40 | RELEASE.2025-04-22T22-12-26Z-cpuv1 | |
-| &cross; | rustfs | 172.25.51.41 | latest | |
+| &cross; | minio | 172.25.51.3 | RELEASE.2025-04-22T22-12-26Z-cpuv1 | |
+| &cross; | rustfs | 172.25.51.4 | latest | |
 
-### monitor (172.25.51.70~172.25.51.90)
+### monitor (172.25.51.30~172.25.51.50)
 | status | service | backend ip | version | 备注 |
 | --- | ---| --- | --- | --- |
-| &check; | portainer | 172.25.51.70 | 2.25.1-alpine | 127.0.0.1:19000 打开控制台 |
-| &cross; | rancher | 172.25.51.71 | latest | |
+| &check; | portainer | 172.25.51.30 | 2.25.1-alpine | 127.0.0.1:19000 打开控制台 |
+| &cross; | rancher | 172.25.51.31 | latest | |
+
+## application (172.25.51.60~172.25.51.80)
+| status | service | backend ip | version | 备注 |
+| --- | ---| --- | --- | --- |
+| &check; | ofelia | 172.25.51.60 | 0.3.18 | 用来执行定时任务(针对容器) |
+| &check; | traefik-whoami | 172.26.51.61 | latest | |
+| &check; | traefik-whoami2 | 172.26.51.62 | latest | |
+| &cross; | zentao | 172.25.51.63 | latest | |
+| &cross; | yapi | 172.25.51.64 | 1.12.0 | |
+| &cross; | yapi-init | 172.25.51.65 | 1.12.0 | |
+| &check; | ninedata | 172.25.51.66 | latest | |
 
 ## monitor (172.25.52.3~172.25.52.30)
 | status | service | backend ip | version | 备注 |
 | --- | ---| --- | --- | --- |
-| &check; | alloy | 172.26.3.84 | 3 | |
-| &check; | loki-read | 172.26.3.85 | 3 | |
-| &check; | loki-write | 172.26.3.86 | 3 | |
-| &check; | loki-backend | 172.26.3.87 | 3 | |
-| &check; | grafana | 172.26.3.88 | 12.0.2 | |
-| &cross; | Prometheus | 172.26.3.90 | | |
-| &cross; | fluentbit | 172.26.3.91 | 4.0.4 | |
-
-## application (172.25.53.3~172.25.53.120)
-| status | service | backend ip | version | 备注 |
-| --- | ---| --- | --- | --- |
-| &cross; | zentao | 172.25.53.3 | latest | |
-| &cross; | yapi | 172.25.53.4 | 1.12.0 | |
-| &cross; | yapi-init | 172.25.53.5 | 1.12.0 | |
-| &check; | ofelia | 172.25.53.6 | 0.3.18 | 用来执行定时任务(针对容器) |
-| &check; | ninedata | 172.25.53.9 | latest | |
-| &check; | traefik-whoami | 172.26.3.190 | latest | |
-| &check; | traefik-whoami2 | 172.26.3.191 | latest | |
+| &check; | alloy | 172.25.52.3 | 3 | |
+| &check; | loki-read | 172.25.52.4 | 3 | |
+| &check; | loki-write | 172.25.52.5 | 3 | |
+| &check; | loki-backend | 172.25.52.6 | 3 | |
+| &check; | grafana | 172.25.52.7 | 12.0.2 | |
+| &cross; | Prometheus | 172.25.52.8 | | |
+| &cross; | fluentbit | 172.25.52.9 | 4.0.4 | |
 
 # 使用到的镜像
 ```json

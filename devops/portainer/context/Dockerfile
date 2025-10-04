@@ -1,6 +1,6 @@
 ARG DOCKER_REGISTRY_URL=
 ARG PORTAINER_VERSION=latest
-FROM ${DOCKER_REGISTRY_URL}portainer.portainer-ce:${PORTAINER_VERSION}
+FROM ${DOCKER_REGISTRY_URL}portainer/portainer-ce:${PORTAINER_VERSION}
 
 LABEL maintainer="zaizai <373045134@qq.com>"
 
