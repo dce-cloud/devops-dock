@@ -1,19 +1,17 @@
 include:
   - ../docker-compose-network.yml
-  #- ./gitlab/docker-compose-gitlab.yml
-  #- ./gitlab-runner/docker-compose-gitlab-runner.yml
+  # - ./gitlab/docker-compose-gitlab.yml
   #- ./gitea/docker-compose-gitea.yml
-  - ./jenkins/docker-compose-jenkins.yml
-  - ./dind/docker-compose-dind.yml
-  - ./sonarqube/docker-compose-sonarqube.yml
-  # - ./vault/docker-compose-vault.yml
+  # - ./gitlab-runner/docker-compose-gitlab-runner.yml
+  - ./portainer/docker-compose-portainer.yml
+  - ./mysql/docker-compose-mysql.yml
+  - ./redis/docker-compose-redis.yml
+  - ./postgres/docker-compose-postgres.yml
+  - ./mongo/docker-compose-mongo.yml
+  # - ./minio/docker-compose-minio.yml
+  # - ./rustfs/docker-compose-rustfs.yml
+  # - ./sonarqube/docker-compose-sonarqube.yml
+  # - ./rancher/docker-compose-rancher.yml
   - ./traefik/docker-compose-traefik.yml
   - ./nginx/docker-compose-nginx.yml
-
-
-  - ./ofelia/docker-compose-ofelia.yml
-  - ./zentao/docker-compose-zentao.yml
-  - ./yapi/docker-compose-yapi.yml
-  #- ./minio/docker-compose-minio.yml
-  - ./rustfs/docker-compose-rustfs.yml
  

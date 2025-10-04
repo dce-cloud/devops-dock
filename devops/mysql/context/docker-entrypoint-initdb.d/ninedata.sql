@@ -1,0 +1,4 @@
+CREATE USER 'ninedata'@'%' IDENTIFIED BY 'PT42PewCgIyV';
+GRANT ALL ON *.* TO 'ninedata'@'%';
+
+FLUSH PRIVILEGES;

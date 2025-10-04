@@ -8,72 +8,49 @@
 
 # 服务清单
 
-## devops (172.25.50.3~172.25.55.3)
-
-### scm (172.25.50.3~172.25.50.20)
+## devops (172.25.50.3~172.25.50.50)
 | status | service | backend ip | version | 备注 |
 | --- | ---| --- | --- | --- |
 | &cross; | gitlab | 172.25.50.3 | 18.1.0-ce.0 | |
-| &cross; | gitlab-runner | 172.25.50.4 | latest | |
-| &cross; | gitee | 172.25.50.5 | 18.1.0-ce.0 | |
+| &cross; | gitea | 172.25.50.4 | 18.1.0-ce.0 | |
+| &cross; | gitlab-runner | 172.25.50.5 | latest | |
+| &check; | jenkins | 172.25.50.6 | alpine3.22-jdk17 | 使用jdk17 |
+| &check; | dind | 172.25.50.7 | 28.3.0-dind-alpine3.22 | |
+| &cross; | sonarqube | 172.25.50.8 | latest | |
+| &cross; | vault | 172.25.50.9 | 1.20 | |
+| &check; | traefik | 172.25.50.10 | v3.4 | |
+| &check; | nginx | 172.25.50.11 | 1.29-alpine | |
+| &check; | mysql | 172.25.50.12 | mysql8.4 | |
+| &check; | redis | 172.25.50.13 | redis8.0.3 | |
+| &check; | postgres | 172.25.50.14 | 17.5 | |
+| &check; | mongo4 | 172.25.50.15 | 4.4 | |
+| &check; | mongo | 172.25.50.16 | 8.0 | |
+| &cross; | minio | 172.25.50.17 | RELEASE.2025-04-22T22-12-26Z-cpuv1 | |
+| &cross; | rustfs | 172.25.50.18 | latest | |
+| &check; | portainer | 172.25.50.19 | 2.25.1-alpine | 127.0.0.1:19000 打开控制台 |
+| &cross; | rancher | 172.25.50.20 | latest | |
 
-### ci (172.25.50.40~172.25.50.60)
+## application (172.25.50.60~172.25.50.80)
 | status | service | backend ip | version | 备注 |
 | --- | ---| --- | --- | --- |
-| &check; | jenkins | 172.25.50.40 | alpine3.22-jdk17 | 使用jdk17 |
-| &check; | dind | 172.25.50.41 | 28.3.0-dind-alpine3.22 | |
-| &cross; | sonarqube | 172.25.50.42 | latest | |
-| &cross; | vault | 172.25.50.43 | 1.20 | |
+| &check; | traefik-whoami | 172.25.50.60 | latest | |
+| &check; | traefik-whoami2 | 172.25.50.61 | latest | |
+| &check; | ofelia | 172.25.50.62 | 0.3.18 | 用来执行定时任务(针对容器) |
+| &cross; | zentao | 172.25.50.63 | latest | |
+| &cross; | yapi | 172.25.50.64 | 1.12.0 | |
+| &cross; | yapi-init | 172.25.50.65 | 1.12.0 | |
+| &check; | ninedata | 172.25.50.66 | latest | |
 
-### gateway (172.25.50.80~172.25.50.100)
+## monitor (172.25.51.3~172.25.51.30)
 | status | service | backend ip | version | 备注 |
 | --- | ---| --- | --- | --- |
-| &check; | traefik | 172.25.50.80 | v3.4 | |
-| &check; | nginx | 172.25.50.81 | 1.29-alpine | |
-
-### db (172.25.50.101~172.25.50.120)
-| status | service | backend ip | version | 备注 |
-| --- | ---| --- | --- | --- |
-| &check; | mysql57 | 172.25.50.101 | mysql8.4 | |
-| &check; | mysql | 172.25.50.102 | mysql8.4 | |
-| &check; | redis | 172.25.50.103 | redis8.0.3 | |
-| &check; | postgres | 172.25.50.104 | 17.5 | |
-| &check; | mongo4 | 172.25.50.105 | 4.4 | |
-| &check; | mongo | 172.25.50.106 | 8.0 | |
-
-### storage (172.25.51.3~172.25.51.20)
-| status | service | backend ip | version | 备注 |
-| --- | ---| --- | --- | --- |
-| &cross; | minio | 172.25.51.3 | RELEASE.2025-04-22T22-12-26Z-cpuv1 | |
-| &cross; | rustfs | 172.25.51.4 | latest | |
-
-### monitor (172.25.51.30~172.25.51.50)
-| status | service | backend ip | version | 备注 |
-| --- | ---| --- | --- | --- |
-| &check; | portainer | 172.25.51.30 | 2.25.1-alpine | 127.0.0.1:19000 打开控制台 |
-| &cross; | rancher | 172.25.51.31 | latest | |
-
-## application (172.25.51.60~172.25.51.80)
-| status | service | backend ip | version | 备注 |
-| --- | ---| --- | --- | --- |
-| &check; | ofelia | 172.25.51.60 | 0.3.18 | 用来执行定时任务(针对容器) |
-| &check; | traefik-whoami | 172.26.51.61 | latest | |
-| &check; | traefik-whoami2 | 172.26.51.62 | latest | |
-| &cross; | zentao | 172.25.51.63 | latest | |
-| &cross; | yapi | 172.25.51.64 | 1.12.0 | |
-| &cross; | yapi-init | 172.25.51.65 | 1.12.0 | |
-| &check; | ninedata | 172.25.51.66 | latest | |
-
-## monitor (172.25.52.3~172.25.52.30)
-| status | service | backend ip | version | 备注 |
-| --- | ---| --- | --- | --- |
-| &check; | alloy | 172.25.52.3 | 3 | |
-| &check; | loki-read | 172.25.52.4 | 3 | |
-| &check; | loki-write | 172.25.52.5 | 3 | |
-| &check; | loki-backend | 172.25.52.6 | 3 | |
-| &check; | grafana | 172.25.52.7 | 12.0.2 | |
-| &cross; | Prometheus | 172.25.52.8 | | |
-| &cross; | fluentbit | 172.25.52.9 | 4.0.4 | |
+| &check; | alloy | 172.25.51.3 | 3 | |
+| &check; | loki-read | 172.25.51.4 | 3 | |
+| &check; | loki-write | 172.25.51.5 | 3 | |
+| &check; | loki-backend | 172.25.51.6 | 3 | |
+| &check; | grafana | 172.25.51.7 | 12.0.2 | |
+| &cross; | Prometheus | 172.25.51.8 | | |
+| &cross; | fluentbit | 172.25.51.9 | 4.0.4 | |
 
 # 使用到的镜像
 ```json

@@ -1,7 +1,7 @@
 include:
   - ../docker-compose-network.yml
+  - ./whoami/docker-compose-whoami.yml
   - ./ofelia/docker-compose-ofelia.yml
-  - ./traefik-whoami/docker-compose-traefik-whoami.yml
   - ./zentao/docker-compose-zentao.yml
   - ./yapi/docker-compose-yapi.yml
   - ./ninedata/docker-compose-ninedata.yml

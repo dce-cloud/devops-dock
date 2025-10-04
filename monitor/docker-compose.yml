@@ -1,7 +1,5 @@
 include:
   - ../docker-compose-network.yml
-  - ./portainer/docker-compose-portainer.yml
   - ./alloy/docker-compose-alloy.yml
   - ./loki/docker-compose-loki-cluster.yml
   - ./grafana/docker-compose-grafana.yml
-  - ./rancher/docker-compose-rancher.yml

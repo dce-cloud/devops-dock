@@ -1,0 +1,33 @@
+services:
+
+### TRAEFIK WHOAMI ##############################################
+  whoami1:
+    build:
+      context: ${WHOAMI_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        TRAEFIK_WHOAMI_VERSION: ${WHOAMI_VERSION}
+    container_name: ${WHOAMI_1_CONTAINER_NAME}
+    hostname: ${WHOAMI_1_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    environment:
+      TZ: ${TZ}
+    networks:
+      backend:
+        ipv4_address: ${WHOAMI_1_BACKEND_IP}
+
+### TRAEFIK WHOAMI 2 ##############################################
+  whoami2:
+    build:
+      context: ${WHOAMI_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        TRAEFIK_WHOAMI_VERSION: ${WHOAMI_VERSION}
+    container_name: ${WHOAMI_2_CONTAINER_NAME}
+    hostname: ${WHOAMI_2_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    environment:
+      TZ: ${TZ}
+    networks:
+      backend:
+        ipv4_address: ${WHOAMI_2_BACKEND_IP}

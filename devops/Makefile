@@ -13,17 +13,13 @@ test:
 	@echo "test ..."
 	@ssh -Tvvv git@gitlab.devops.top
 
+.PHONY: gitlab_initial_root_password
+gitlab_initial_root_password:
+	@${DC_EXEC} ${GITLAB_CONTAINER_NAME} grep 'Password:' /etc/gitlab/initial_root_password
 
-.PHONY: enter_zentao enter_yapi enter_yapi_init enter_ofelia
-enter_zentao:
-	@${DC_ENTER} ${ZENTAO_CONTAINER_NAME} bash
-enter_yapi_init:
-	@${DC_ENTER} ${YAPI_CONTAINER_NAME}_init sh
-enter_yapi:
-	@${DC_ENTER} ${YAPI_CONTAINER_NAME} sh
-enter_ofelia:
-	@${DC_ENTER} ${OFELIA_CONTAINER_NAME} sh
-
+.PHONY: enter_gitlab
+enter_gitlab:
+	@${DC_ENTER} ${GITLAB_CONTAINER_NAME} bash
 
 .PHONY: echo_jenkins_initial_admin_password echo_generate_jenkins_ssh_key
 echo_jenkins_initial_admin_password:
@@ -57,10 +53,25 @@ dind_clear_all_cache:
 dind_clear_until_cache:
 	@echo docker compose exec ${DIND_CONTAINER_NAME} docker buildx prune --filter "until=168h"
 
-.PHONY: gitlab_initial_root_password
-gitlab_initial_root_password:
-	@${DC_EXEC} ${GITLAB_CONTAINER_NAME} grep 'Password:' /etc/gitlab/initial_root_password
+.PHONY: enter_minio enter_rustfs
+enter_minio:
+	@${DC_ENTER} ${MINIO_CONTAINER_NAME} bash
+enter_rustfs:
+	@${DC_ENTER} ${RUSTFS_CONTAINER_NAME} bash
 
-.PHONY: enter_gitlab
-enter_gitlab:
-	@${DC_ENTER} ${GITLAB_CONTAINER_NAME} bash
+.PHONY: create_traefik_auth_httpasswd create_alloy_auth_httpasswd
+create_traefik_auth_httpasswd:
+	@echo $(shell which htpasswd) -bc ./traefik/context/htpasswd/traefik $(TRAEFIK_BASIC_AUTH_USER) $(TRAEFIK_BASIC_AUTH_PASSWORD)
+create_alloy_auth_httpasswd:
+	@echo $(shell which htpasswd) -bc ./traefik/context/htpasswd/alloy $(ALLOY_BASIC_AUTH_USER) $(ALLOY_BASIC_AUTH_PASSWORD)
+
+.PHONY: enter_traefik enter_nginx
+enter_traefik:
+	@${DC_ENTER} ${TRAEFIK_CONTAINER_NAME} /bin/sh
+
+enter_nginx:
+	@${DC_ENTER} ${NGINX_CONTAINER_NAME} /bin/sh
+
+.PHONY: enter_mysql
+enter_mysql:
+	@${DC_ENTER} ${MYSQL_CONTAINER_NAME} bash
