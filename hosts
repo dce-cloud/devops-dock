@@ -1,12 +1,15 @@
 #  >>> DEVOPS DOCK START >>>
 
-127.0.0.1 ninedata.devops.top
-127.0.0.1 jenkins.devops.top
-127.0.0.1 sonarqube.devops.top
-127.0.0.1 zentao.devops.top
-127.0.0.1 yapi.devops.top
+127.0.0.1 gitlab.devops.top
+127.0.0.1 gitea.devops.top
+127.0.0.1 gateway.devops.top
 127.0.0.1 portainer.devops.top
+127.0.0.1 jenkins.devops.top
 127.0.0.1 grafana.devops.top
 127.0.0.1 alloy.devops.top
+127.0.0.1 zentao.devops.top
+127.0.0.1 yapi.devops.top
+127.0.0.1 sonarqube.devops.top
+127.0.0.1 ninedata.devops.top
 
 # <<< DEVOPS DOCK END <<<

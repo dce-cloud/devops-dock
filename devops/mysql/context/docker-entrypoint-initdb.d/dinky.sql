@@ -1,0 +1,6 @@
+CREATE USER 'dinky'@'%' IDENTIFIED BY 'dinky';
+GRANT ALL ON *.* TO 'dinky'@'%';
+
+FLUSH PRIVILEGES;
+
+CREATE DATABASE IF NOT EXISTS `dinky` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_bin' ;

@@ -1,0 +1,44 @@
+volumes:
+  postgres-data:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### PostgreSQL ###########################################
+  postgres:
+    build:
+      context: ${POSTGRES_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        POSTGRES_VERSION: ${POSTGRES_VERSION}
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    hostname: ${POSTGRES_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    environment:
+      TZ: ${TZ}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      GITLAB_POSTGRES_INIT: ${GITLAB_POSTGRES_INIT}
+      GITLAB_POSTGRES_USER: ${GITLAB_POSTGRES_USER}
+      GITLAB_POSTGRES_PASSWORD: ${GITLAB_POSTGRES_PASSWORD}
+      GITLAB_POSTGRES_DB: ${GITLAB_POSTGRES_DB}
+      SONARQUBE_POSTGRES_INIT: ${SONARQUBE_POSTGRES_INIT}
+      SONARQUBE_POSTGRES_DB: ${SONARQUBE_POSTGRES_DB}
+      SONARQUBE_POSTGRES_USER: ${SONARQUBE_POSTGRES_USER}
+      SONARQUBE_POSTGRES_PASSWORD: ${SONARQUBE_POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ${POSTGRES_HOST_PATH}/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "${POSTGRES_HOST_PORT}:5432"
+    networks:
+      backend:
+        ipv4_address: ${POSTGRES_BACKEND_IP}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+      

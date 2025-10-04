@@ -1,0 +1,47 @@
+volumes:
+  mysql-data:
+    driver: ${VOLUMES_DRIVER}
+
+secrets:
+  mysql_root_password:
+    file: ${MYSQL_HOST_PATH}/mysql_root_password
+  mysql_password:
+    file: ${MYSQL_HOST_PATH}/mysql_password 
+
+services:
+
+### Mysql ################################################
+  mysql:
+    build:
+      context: ${MYSQL_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        MYSQL_VERSION: ${MYSQL_VERSION}
+    hostname: ${MYSQL_HOSTNAME}
+    container_name: ${MYSQL_CONTAINER_NAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - "mysql-data:/var/lib/mysql"
+      - "${MYSQL_HOST_PATH}/conf:/etc/mysql/conf.d"
+      - "${MYSQL_HOST_PATH}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - "${MYSQL_HOST_PORT}:3306"
+    environment:
+      TZ: "${TZ}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_INITDB_SKIP_TZINFO: "1"
+    secrets:
+        - mysql_root_password
+        - mysql_password
+    networks:
+      backend:
+        ipv4_address: ${MYSQL_BACKEND_IP}
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p=$(cat /run/secrets/mysql_root_password)']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

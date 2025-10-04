@@ -32,11 +32,12 @@
 | &check; | nginx | 172.25.50.81 | 1.29-alpine | |
 
 ### db (172.25.50.101~172.25.50.120)
-| &check; | mysql | 172.25.50.101 | mysql8.4 | |
-| &check; | redis | 172.25.50.102 | redis8.0.3 | |
-| &check; | postgres | 172.25.50.103 | 17.5 | |
-| &check; | mongo4 | 172.25.50.104 | 4.4 | |
-| &check; | mongo | 172.25.50.105 | 8.0 | |
+| &check; | mysql57 | 172.25.50.101 | mysql8.4 | |
+| &check; | mysql | 172.25.50.102 | mysql8.4 | |
+| &check; | redis | 172.25.50.103 | redis8.0.3 | |
+| &check; | postgres | 172.25.50.104 | 17.5 | |
+| &check; | mongo4 | 172.25.50.105 | 4.4 | |
+| &check; | mongo | 172.25.50.106 | 8.0 | |
 
 ### storage (172.25.51.40~172.25.51.60)
 | status | service | backend ip | version | 备注 |
@@ -60,27 +61,6 @@
 | &check; | grafana | 172.26.3.88 | 12.0.2 | |
 | &check; | Prometheus | 172.26.3.90 | | |
 | &check; | fluentbit | 172.26.3.91 | 4.0.4 | |
-
-## php-stack (172.25.52.50~172.25.52.70)
-| status | service | backend ip | version | 备注 |
-| --- | ---| --- | --- | --- |
-| &check; | liyue-php56-apache | 172.26.3.140 | php5.6+apache2.4 | |
-| &check; | qingqiu-php56-apache | 172.26.3.141 | php5.6+apache2.4 | |
-| &check; | kunlun-php56-apache | 172.26.3.142 | php5.6+apache2.4 | |
-| &check; | peixun-php56-apache | 172.26.3.143 | php5.6+apache2.4 | |
-| &check; | muye-php56-apache | 172.26.3.144 | php5.6+apache2.4 | |
-
-## db (172.25.52.80~172.25.52.100)
-| status | service | backend ip | version | 备注 |
-| --- | ---| --- | --- | --- |
-| &check; | liyue-mysql | 172.26.3.152 | mysql5.7 | |
-| &check; | qingqiu-mysql | 172.26.3.153 | mysql5.7 | |
-| &check; | liyue-redis | 172.26.3.156 | redis8.0.3 | |
-| &check; | qingqiu-redis | 172.26.3.157 | redis8.0.3 | |
-| &check; | liyue-postgres | 172.26.3.166 | 17.5 | |
-| &check; | qingqiu-postgres | 172.26.3.167 | 17.5 | |
-| &check; | liyue-mongo | 172.26.3.173 | 8.0 | |
-| &check; | qingqiu-mongo | 172.26.3.174 | 8.0 | |
 
 ## application (172.25.53.3~172.25.53.120)
 | status | service | backend ip | version | 备注 |

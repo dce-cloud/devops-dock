@@ -1,0 +1,7 @@
+ARG DOCKER_REGISTRY_URL=
+ARG MYSQL_VERSION=8.4.6
+FROM ${DOCKER_REGISTRY_URL}mysql:${MYSQL_VERSION}-oraclelinux9
+
+LABEL maintainer="zaizai <373045134@qq.com>"
+
+ENV TZ=Asia/Shanghai

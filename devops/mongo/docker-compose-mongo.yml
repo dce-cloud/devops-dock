@@ -1,0 +1,65 @@
+volumes:
+  mongo-data:
+    driver: ${VOLUMES_DRIVER}
+  mongo4-data:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### Mongo ################################################
+  mongo:
+    build:
+      context: ${MONGO_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        MONGO_VERSION: ${MONGO_VERSION}
+    hostname: ${MONGO_HOSTNAME}
+    container_name: ${MONGO_CONTAINER_NAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - "mongo-data:/data"
+      - "${MONGO_HOST_PATH}/mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - "${MONGO_HOST_PORT}:27017"
+    environment:
+      TZ: "${TZ}"
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    networks:
+      backend:
+        ipv4_address: ${MONGO_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "mongosh", "--username", "${MONGO_USERNAME}", "--password", "${MONGO_PASSWORD}", "--eval", "db.adminCommand('ping')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  ### Mongo4 ################################################
+  mongo4:
+    build:
+      context: ${MONGO_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        MONGO_VERSION: ${MONGO4_VERSION}
+    hostname: ${MONGO4_HOSTNAME}
+    container_name: ${MONGO4_CONTAINER_NAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - "mongo4-data:/data"
+      - "${MONGO_HOST_PATH}/mongo4/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - "${MONGO4_HOST_PORT}:27017"
+    environment:
+      TZ: "${TZ}"
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO4_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO4_PASSWORD}
+    networks:
+      backend:
+        ipv4_address: ${MONGO4_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "mongo", "--username", "${MONGO4_USERNAME}", "--password", "${MONGO4_PASSWORD}", "--eval", "db.adminCommand('ping')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
