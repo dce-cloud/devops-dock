@@ -29,3 +29,5 @@ database:274.vea_2e859b_2661
 database-mysql:142.vc259713f0032
 jobConfigHistory:1356.ve360da_6c523a_
 mysql-api:9.4.0-69.va_d35f1c8187a_
+periodicbackup:2.0
+thinBackup:2.1.3
