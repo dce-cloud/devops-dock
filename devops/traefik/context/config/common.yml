@@ -1,15 +1,15 @@
-tls:
-  stores:
-    default:
-      defaultCertificate:
-        certFile: /certs/devops.top/devops.top.pem
-        keyFile: /certs/devops.top/devops.top.key
+# tls:
+#   stores:
+#     default:
+#       defaultCertificate:
+#         certFile: /certs/devops.top/devops.top.pem
+#         keyFile: /certs/devops.top/devops.top.key
         
-  certificates:
-    - certFile: /certs/devops.top/devops.top.pem
-      keyFile: /certs/devops.top/devops.top.key
-      stores:
-        - default
+#   certificates:
+#     - certFile: /certs/devops.top/devops.top.pem
+#       keyFile: /certs/devops.top/devops.top.key
+#       stores:
+#         - default
 
 RedirectHttpToHttpsRouterAnchor: &RedirectHttpToHttpsRouterAnchor
   entryPoints:
@@ -25,7 +25,7 @@ http:
       headers:
         accessControlAllowOriginListRegex: 
           - "^https?://([a-zA-Z0-9-]+\\.)*devops\\.top$"
-        accessControlAllowHeaders: ""
+        accessControlAllowHeaders: "Dnt,Host,Pragma,Cache-Control,Ua,Time,Enduser,Address,Network,Extendid,X-Requested-With,User-Agent,Source,Devicesn,Accept,Pkgsource,Platform,Referer,Accept-Encoding,Accept-Language,Cookie,App-Id,Lcdp-Csrf-Token,Lcdp-Signature,X-CustomHeader,Keep-Alive,If-Modified-Since,Authorization,Content-Type,Devicetype,Token,Secret,Referrer-Policy"
         accessControlAllowMethods: "GET,POST,PUT,DELETE,OPTIONS,PATCH"
         accessControlAllowCredentials: true
         accessControlMaxAge: 1728000
@@ -48,6 +48,12 @@ http:
         port: "443"
         
   routers:
-    RedirectHttpToHttps:
+    # RedirectHttpToHttps1:
+    #   <<: *RedirectHttpToHttpsRouterAnchor
+    #   rule: "(HostRegexp(`^.+(-)(api)\\.devops\\.top$`) && (PathPrefix(`/api/english/`) || PathPrefix(`/english/rpc/`) || PathPrefix(`/job-api/english/`)))"
+    # RedirectHttpToHttps2:
+    #   <<: *RedirectHttpToHttpsRouterAnchor
+    #   rule: "HostRegexp(`^.+(-)(dc|t|s|zy)\\.devops\\.top$`)"
+    RedirectHttpToHttps3:
       <<: *RedirectHttpToHttpsRouterAnchor
       rule: "HostRegexp(`^(domain)\\.devops\\.top$`)"

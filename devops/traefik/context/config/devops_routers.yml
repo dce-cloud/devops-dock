@@ -1,3 +1,10 @@
+#### Gitlab ####
+
+GitlabRouterAnchor: &GitlabRouterAnchor
+  rule: "Host(`gitlab.devops.top`)"
+  service: GitlabSvc
+  middlewares:
+
 #### Jenkins ####
 
 JenkinsRouterAnchor: &JenkinsRouterAnchor
@@ -12,10 +19,32 @@ SonarqubeRouterAnchor: &SonarqubeRouterAnchor
   service: SonarqubeSvc
   middlewares:
 
+#### minio ####
+
+MinioRouterAnchor: &MinioRouterAnchor
+  rule: "Host(`minio.devops.top`)"
+  service: MinioSvc
+  middlewares:
+
+#### rustfs ####
+
+RustfsRouterAnchor: &RustfsRouterAnchor
+  rule: "Host(`rustfs.devops.top`)"
+  service: RustfsSvc
+  middlewares:
+
 #### Http ####
 
 http:
   services:
+    GitlabSvc:
+      loadBalancer:
+        servers:
+          - url: "http://gitlab:80"
+    # GitlabSshSvc:
+    #   loadBalancer:
+    #     servers:
+    #       - url: "http://gitlab:22"
     JenkinsSvc:
       loadBalancer:
         servers:
@@ -24,10 +53,31 @@ http:
       loadBalancer:
         servers:
           - url: "http://sonarqube:9000"
+    MinioSvc:
+      loadBalancer:
+        servers:
+          - url: "http://minio:9001"
+    RustfsSvc:
+      loadBalancer:
+        servers:
+          - url: "http://rustfs:9000"
 
   middlewares:
 
   routers:
+
+    #### gitlab ####
+    GitlabHttp:
+      <<: *GitlabRouterAnchor
+      entryPoints:
+        - web
+
+    # GitlabSsh:
+    #   entryPoints:
+    #     - ssh
+    #   rule: "HostSNI(`*`)"
+    #   service: GitlabSshSvc
+    #   middlewares:
 
     #### jenkins ####
 
@@ -41,6 +91,22 @@ http:
 
     SonarqubeHttp:
       <<: *SonarqubeRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### minio ####
+
+    MinioHttp:
+      <<: *MinioRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### rustfs ####
+
+    RustfsHttp:
+      <<: *RustfsRouterAnchor
       entryPoints:
         - web
       priority: 100

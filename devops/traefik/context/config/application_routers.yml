@@ -26,7 +26,7 @@ http:
     YapiSvc:
       loadBalancer:
         servers:
-          - url: "http://yapi:3008"
+          - url: "http://yapi:3000"
     ZentaoSvc:
       loadBalancer:
         servers:
@@ -35,6 +35,24 @@ http:
       loadBalancer:
         servers:
           - url: "http://ninedata:9999"
+    traefikWhoamiSvc:
+      loadBalancer:
+        servers:
+          - url: "http://whoami1:80"
+    traefikWhoami2Svc:
+      loadBalancer:
+        servers:
+          - url: "http://whoami2:80"
+
+  middlewares:
+    traefikWhoamiReplacepathregex:
+      replacePathRegex:
+        regex: "^/api/english/(.*)"
+        replacement: "/api/${1}"
+    traefikWhoami2Replacepathregex:
+      replacePathRegex:
+        regex: "^/api/math/(.*)"
+        replacement: "/api/${1}"
 
   routers:
 
@@ -60,3 +78,19 @@ http:
       entryPoints:
         - web
       priority: 100
+
+    traefikWhoami:
+      entryPoints:
+        - web
+      rule: "Host(`whoami1.devops.top`) && PathPrefix(`/api/english/`)"
+      service: traefikWhoamiSvc
+      middlewares:
+        - traefikWhoamiReplacepathregex
+        
+    traefikWhoami2:
+      entryPoints:
+        - web
+      rule: "Host(`whoami2.devops.top`) && PathPrefix(`/api/math/`)"
+      service: traefikWhoami2Svc
+      middlewares:
+        - traefikWhoami2Replacepathregex
