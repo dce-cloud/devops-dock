@@ -1,6 +1,9 @@
-FROM amd64/buildpack-deps:buster-curl as installer
+ARG DOCKER_REGISTRY_URL=
+FROM ${DOCKER_REGISTRY_URL}amd64/buildpack-deps:buster-curl as installer
 
 LABEL maintainer="zz <373045134@qq.com>"
+
+ENV TZ=Asia/Shanghai
 
 ARG SENTINEL_VERSION=1.8.8
 
