@@ -42,6 +42,7 @@
 | &cross; | zentao | 172.25.50.63 | latest | |
 | &cross; | yapi | 172.25.50.64 | 1.12.0 | |
 | &check; | ninedata | 172.25.50.65 | latest | |
+| &cross; | sentinel-dashboard | 172.25.50.66 | latest | |
 
 ## monitor (172.25.51.3~172.25.51.30)
 | status | service | backend ip | version | 备注 |
