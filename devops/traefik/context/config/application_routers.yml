@@ -35,21 +35,21 @@ http:
       loadBalancer:
         servers:
           - url: "http://ninedata:9999"
-    traefikWhoamiSvc:
+    Whoami1Svc:
       loadBalancer:
         servers:
           - url: "http://whoami1:80"
-    traefikWhoami2Svc:
+    Whoami2Svc:
       loadBalancer:
         servers:
           - url: "http://whoami2:80"
 
   middlewares:
-    traefikWhoamiReplacepathregex:
+    Whoami1Replacepathregex:
       replacePathRegex:
         regex: "^/api/english/(.*)"
         replacement: "/api/${1}"
-    traefikWhoami2Replacepathregex:
+    Whoami2Replacepathregex:
       replacePathRegex:
         regex: "^/api/math/(.*)"
         replacement: "/api/${1}"
@@ -79,18 +79,18 @@ http:
         - web
       priority: 100
 
-    traefikWhoami:
+    Whoami1:
       entryPoints:
         - web
       rule: "Host(`whoami1.devops.top`) && PathPrefix(`/api/english/`)"
-      service: traefikWhoamiSvc
+      service: Whoami1Svc
       middlewares:
-        - traefikWhoamiReplacepathregex
+        - Whoami1Replacepathregex
         
-    traefikWhoami2:
+    Whoami2:
       entryPoints:
         - web
       rule: "Host(`whoami2.devops.top`) && PathPrefix(`/api/math/`)"
-      service: traefikWhoami2Svc
+      service: Whoami2Svc
       middlewares:
-        - traefikWhoami2Replacepathregex
+        - Whoami2Replacepathregex
