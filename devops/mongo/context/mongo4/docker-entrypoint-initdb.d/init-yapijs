@@ -1,8 +1,0 @@
-// 连接到 admin 数据库（root 用户必须在 admin 库创建）
-db = db.getSiblingDB('admin');
-
-db.createUser({
-  user: "yapi",
-  pwd: "123456",
-  roles: [{ role: "root", db: "admin" }]
-});
