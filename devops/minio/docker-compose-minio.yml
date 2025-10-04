@@ -3,6 +3,7 @@ volumes:
     driver: ${VOLUMES_DRIVER}
 
 services:
+
 ### MINIO ##############################################
   minio:
     build:

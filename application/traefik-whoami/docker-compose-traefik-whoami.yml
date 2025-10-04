@@ -1,9 +1,3 @@
-volumes:
-  traefik-whoami:
-    driver: ${VOLUMES_DRIVER}
-  traefik-whoami2:
-    driver: ${VOLUMES_DRIVER}
-
 services:
 
 ### TRAEFIK WHOAMI ##############################################
