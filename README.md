@@ -65,7 +65,7 @@
     "nginxinc/nginx-unprivileged:1.29-alpine-otel",
     "nginxinc/nginx-unprivileged:1.29-alpine"
     "alpine:3.22.1",
-    "portainer/portainer-ce:2.31.2-alpine",
+    "portainer/portainer-ce:2.33.2-alpine",
     "php:5.6.40-apache",
     "grafana/grafana:12.0.2",
     "grafana/loki:3",
