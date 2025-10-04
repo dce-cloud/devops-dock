@@ -2,7 +2,7 @@
 db = db.getSiblingDB('admin');
 
 db.createUser({
-  user: "zhiniu",
-  pwd: "zhiniu@0927",
+  user: "yapi",
+  pwd: "123456",
   roles: [{ role: "root", db: "admin" }]
 });
