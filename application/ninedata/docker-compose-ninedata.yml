@@ -26,5 +26,3 @@ services:
     networks:
       backend:
         ipv4_address: ${NINEDATA_BACKEND_IP}
-    depends_on:
-      - ${MYSQL8_CONTAINER_NAME}
