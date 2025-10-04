@@ -20,7 +20,7 @@ services:
       YAPI_CLOSE_REGISTER: true
       YAPI_MAIL_ENABLE: false
       YAPI_LDAP_LOGIN_ENABLE: false
-      YAPI_PLUGINS: []
+      YAPI_PLUGINS: ""
     networks:
       backend:
         ipv4_address: ${YAPI_BACKEND_IP}
