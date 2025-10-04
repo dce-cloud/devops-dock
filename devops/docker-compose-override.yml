@@ -1,4 +1,4 @@
-services:
+# services:
   # jenkins:
   #   extra_hosts:
   #     - "${GIT_SCM_DOMAIN}:${GIT_SCM_HOST}"
