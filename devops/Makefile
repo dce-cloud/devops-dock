@@ -75,3 +75,7 @@ enter_nginx:
 .PHONY: enter_mysql
 enter_mysql:
 	@${DC_ENTER} ${MYSQL_CONTAINER_NAME} bash
+
+.PHONY: enter_mongo4
+enter_mongo4:
+	@${DC_ENTER} ${MONGO4_CONTAINER_NAME} bash
