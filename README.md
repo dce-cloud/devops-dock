@@ -130,7 +130,7 @@ cat /etc/docker/daemon.json
 echo "DOCKER_REGISTRY_URL=registry.cn-beijing.aliyuncs.com/zhiniuai/" >> /etc/environment
 ```
 
-## 宿主机优化参数
+# 宿主机优化参数
 ```shell
 sysctl -w vm.max_map_count=524288
 sysctl -w fs.file-max=131072
