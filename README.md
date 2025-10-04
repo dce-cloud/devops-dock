@@ -1,4 +1,7 @@
 # devops-dock
+- [yapi 参考1](https://blog.opendeveloper.cn/yapi/docker)
+- [yapi 参考2](https://github.com/YMFE/yapi)
+- [yapi 参考3](https://github.com/fjc0k/docker-YApi)
 
 基于 Docker Compose 搭建的DevOps环境
 
@@ -38,8 +41,7 @@
 | &check; | ofelia | 172.25.50.62 | 0.3.18 | 用来执行定时任务(针对容器) |
 | &cross; | zentao | 172.25.50.63 | latest | |
 | &cross; | yapi | 172.25.50.64 | 1.12.0 | |
-| &cross; | yapi-init | 172.25.50.65 | 1.12.0 | |
-| &check; | ninedata | 172.25.50.66 | latest | |
+| &check; | ninedata | 172.25.50.65 | latest | |
 
 ## monitor (172.25.51.3~172.25.51.30)
 | status | service | backend ip | version | 备注 |
