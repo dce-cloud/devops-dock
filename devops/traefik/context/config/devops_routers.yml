@@ -5,6 +5,20 @@ GitlabRouterAnchor: &GitlabRouterAnchor
   service: GitlabSvc
   middlewares:
 
+#### Portainer ####
+
+PortainerRouterAnchor: &PortainerRouterAnchor
+  rule: "Host(`portainer.devops.top`)"
+  service: PortainerSvc
+  middlewares:
+
+#### Rancher ####
+
+RancherRouterAnchor: &RancherRouterAnchor
+  rule: "Host(`rancher.devops.top`)"
+  service: RancherSvc
+  middlewares:
+
 #### Jenkins ####
 
 JenkinsRouterAnchor: &JenkinsRouterAnchor
@@ -49,6 +63,14 @@ http:
       loadBalancer:
         servers:
           - url: "http://jenkins:8080"
+    PortainerSvc:
+      loadBalancer:
+        servers:
+          - url: "http://portainer:9000"
+    RancherSvc:
+      loadBalancer:
+        servers:
+          - url: "http://rancher:80"
     SonarqubeSvc:
       loadBalancer:
         servers:
@@ -107,6 +129,22 @@ http:
 
     RustfsHttp:
       <<: *RustfsRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+    
+    #### Portainer ####
+
+    PortainerHttp:
+      <<: *PortainerRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### Rancher ####
+
+    RancherHttp:
+      <<: *RancherRouterAnchor
       entryPoints:
         - web
       priority: 100
