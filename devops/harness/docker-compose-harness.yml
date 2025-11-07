@@ -25,9 +25,9 @@ services:
     networks:
       backend:
         ipv4_address: ${HARNESS_BACKEND_IP}
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost"]
-    #   interval: 20s
-    #   timeout: 5s
-    #   retries: 5
-    #   start_period: 30s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
