@@ -1,0 +1,33 @@
+volumes:
+  harness-data:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### Harness ################################################
+  harness:
+    build:
+      context: ${HARNESS_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        GITLAB_VERSION: ${HARNESS_VERSION}
+    container_name: ${HARNESS_CONTAINER_NAME}
+    hostname: ${HARNESS_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - harness-data:/data
+      - ${DOCKER_SOCK_HOST_PATH}:/var/run/docker.sock:ro
+    ports:
+      - "3000:3000"
+      - "3022:3022"
+    networks:
+      backend:
+        ipv4_address: ${HARNESS_BACKEND_IP}
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost"]
+    #   interval: 20s
+    #   timeout: 5s
+    #   retries: 5
+    #   start_period: 30s

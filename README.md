@@ -32,6 +32,7 @@
 | &cross; | rustfs | 172.25.50.18 | latest | |
 | &check; | portainer | 172.25.50.19 | 2.25.1-alpine | 127.0.0.1:19000 打开控制台 |
 | &cross; | rancher | 172.25.50.20 | latest | |
+| &cross; | harness | 172.25.50.21 | 3.3.0 | |
 
 ## application (172.25.50.60~172.25.50.80)
 | status | service | backend ip | version | 备注 |

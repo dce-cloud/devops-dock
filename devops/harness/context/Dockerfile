@@ -1,0 +1,7 @@
+ARG DOCKER_REGISTRY_URL=
+ARG HARNESS_VERSION=latest
+FROM ${DOCKER_REGISTRY_URL}harness/harness:${HARNESS_VERSION}
+
+LABEL maintainer="zaizai <373045134@qq.com>"
+
+ENV TZ=Asia/Shanghai
