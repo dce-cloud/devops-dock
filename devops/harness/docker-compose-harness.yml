@@ -10,7 +10,7 @@ services:
       context: ${HARNESS_HOST_PATH}
       args:
         DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
-        GITLAB_VERSION: ${HARNESS_VERSION}
+        HARNESS_VERSION: ${HARNESS_VERSION}
     container_name: ${HARNESS_CONTAINER_NAME}
     hostname: ${HARNESS_HOSTNAME}
     restart: ${DOCKER_RESTART_POLICY}

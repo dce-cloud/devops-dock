@@ -14,4 +14,5 @@ include:
   # - ./rancher/docker-compose-rancher.yml
   - ./traefik/docker-compose-traefik.yml
   - ./nginx/docker-compose-nginx.yml
+  - ./harness/docker-compose-harness.yml
  
