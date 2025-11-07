@@ -3,6 +3,8 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   gitlab-config:
     driver: ${VOLUMES_DRIVER}
+  gitlab-log:
+    driver: ${VOLUMES_DRIVER}
 
 configs:
   gitlab_rb:
@@ -37,6 +39,7 @@ services:
     volumes:
       - gitlab-data:/var/opt/gitlab
       - gitlab-config:/etc/gitlab
+      - gitlab-log:/var/log/gitlab
     configs:
       - source: gitlab_rb
         target: /omnibus_config.rb
