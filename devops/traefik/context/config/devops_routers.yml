@@ -49,7 +49,7 @@ RustfsRouterAnchor: &RustfsRouterAnchor
 
 #### Fs ####
 
-FRobotsTxtRouterAnchor: &FRobotsTxtRouterAnchor
+FsRobotsTxtRouterAnchor: &FsRobotsTxtRouterAnchor
   rule: "(HostRegexp(`^.+\\.fs\\.top$`) || Host(`fs.top`)) && Path(`/robots.txt`)"
   service: FsRobotsTxtSvc
   middlewares:
@@ -163,7 +163,7 @@ http:
     #### fs ####
 
     FsRobotsTxtHttp:
-      <<: *FRobotsTxtRouterAnchor
+      <<: *FsRobotsTxtRouterAnchor
       entryPoints:
         - web
       priority: 100
