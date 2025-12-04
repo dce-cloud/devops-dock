@@ -50,7 +50,7 @@ RustfsRouterAnchor: &RustfsRouterAnchor
 #### Fs ####
 
 FsRouterAnchor: &FsRouterAnchor
-  rule: "HostRegexp(`^.+\\.fs\\.cn$`) || Host(`fs.cn`) && Path(`/robots.txt`)"
+  rule: "HostRegexp(`^.+\\.fs\\.top$`) || Host(`fs.top`) && Path(`/robots.txt`)"
   service: FsSvc
   middlewares:
 
