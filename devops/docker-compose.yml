@@ -15,4 +15,5 @@ include:
   - ./traefik/docker-compose-traefik.yml
   - ./nginx/docker-compose-nginx.yml
   - ./harness/docker-compose-harness.yml
+  - ./fs/docker-compose-fs.yml
  

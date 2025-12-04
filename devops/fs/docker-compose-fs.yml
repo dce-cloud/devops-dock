@@ -1,0 +1,30 @@
+volumes:
+  fs-log:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### File Server ############################################
+  fs:
+    build:
+      context: ${FS_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        NGINX_VERSION: ${NGINX_VERSION}
+    container_name: ${FS_CONTAINER_NAME}
+    hostname: ${FS_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - fs-log:/var/log/nginx
+      - ./robots.txt:/usr/share/nginx/html/robots.txt
+    networks:
+      backend:
+        ipv4_address: ${FS_BACKEND_IP}
+    extra_hosts:
+      - "${HOST_DOCKER_INTERNAL}:${HOST_GATEWAY}"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

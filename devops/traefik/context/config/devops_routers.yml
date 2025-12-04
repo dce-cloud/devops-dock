@@ -47,6 +47,13 @@ RustfsRouterAnchor: &RustfsRouterAnchor
   service: RustfsSvc
   middlewares:
 
+#### Fs ####
+
+FsRouterAnchor: &FsRouterAnchor
+  rule: "HostRegexp(`^.+\\.fs\\.cn$`) || Host(`fs.cn`) && Path(`/robots.txt`)"
+  service: FsSvc
+  middlewares:
+
 #### Http ####
 
 http:
@@ -83,6 +90,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://rustfs:9000"
+    FsSvc:
+      loadBalancer:
+        servers:
+          - url: "http://fs:80"
 
   middlewares:
 
@@ -145,6 +156,14 @@ http:
 
     RancherHttp:
       <<: *RancherRouterAnchor
+      entryPoints:
+        - web
+      priority: 100
+
+    #### fs ####
+
+    FsHttp:
+      <<: *FsRouterAnchor
       entryPoints:
         - web
       priority: 100
