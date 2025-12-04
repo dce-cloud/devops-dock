@@ -49,9 +49,9 @@ RustfsRouterAnchor: &RustfsRouterAnchor
 
 #### Fs ####
 
-FRobotsTextRouterAnchor: &FRobotsTextRouterAnchor
+FRobotsTxtRouterAnchor: &FRobotsTxtRouterAnchor
   rule: "(HostRegexp(`^.+\\.fs\\.top$`) || Host(`fs.top`)) && Path(`/robots.txt`)"
-  service: FsRobotsTextSvc
+  service: FsRobotsTxtSvc
   middlewares:
 
 #### Http ####
@@ -90,7 +90,7 @@ http:
       loadBalancer:
         servers:
           - url: "http://rustfs:9000"
-    FsRobotsTextSvc:
+    FsRobotsTxtSvc:
       loadBalancer:
         servers:
           - url: "http://fs:80/robots.txt"
@@ -162,8 +162,8 @@ http:
 
     #### fs ####
 
-    FsRobotsTextHttp:
-      <<: *FRobotsTextRouterAnchor
+    FsRobotsTxtHttp:
+      <<: *FRobotsTxtRouterAnchor
       entryPoints:
         - web
       priority: 100
