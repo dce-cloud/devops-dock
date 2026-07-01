@@ -26,9 +26,9 @@ services:
       - nacos-data:/home/nacos/data
       - nacos-logs:/home/nacos/logs
     ports:
-      - "3000:8080"
-      - "222:8848"
-      - "222:9848"
+      - "${NACOS_WEB_PORT}:8080"
+      - "${NACOS_MAIN_PORT}:8848"
+      - "${NACOS_GRPC_PORT}:9848"
     networks:
       backend:
         ipv4_address: ${NACOS_BACKEND_IP}
