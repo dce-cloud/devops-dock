@@ -16,4 +16,5 @@ include:
   - ./nginx/docker-compose-nginx.yml
   - ./harness/docker-compose-harness.yml
   - ./fs/docker-compose-fs.yml
+  - ./nacos/docker-compose-nacos.yml
  
