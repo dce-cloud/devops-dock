@@ -8,11 +8,11 @@ secrets:
   mysql_root_password:
     file: ${MYSQL_HOST_PATH}/mysql_root_password
   mysql_password:
-    file: ${MYSQL_HOST_PATH}/mysql_password 
+    file: ${MYSQL_HOST_PATH}/mysql_password
   mysql80_root_password:
     file: ${MYSQL80_HOST_PATH}/mysql_root_password
   mysql80_password:
-    file: ${MYSQL80_HOST_PATH}/mysql_password 
+    file: ${MYSQL80_HOST_PATH}/mysql_password
 
 x-mysql8-healthcheck: &mysql8-healthcheck
     test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$(cat /run/secrets/mysql_root_password)']

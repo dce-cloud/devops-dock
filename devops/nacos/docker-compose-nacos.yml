@@ -18,10 +18,19 @@ services:
     restart: ${DOCKER_RESTART_POLICY}
     environment:
       TZ: ${TZ}
+      LANG: "C.UTF-8"
       MODE: standalone
+      PREFER_HOST_MODE: hostname
+      SPRING_DATASOURCE_PLATFORM: mysql
       NACOS_AUTH_TOKEN: ${NACOS_AUTH_TOKEN}
       NACOS_AUTH_IDENTITY_KEY: ${NACOS_AUTH_IDENTITY_KEY}
       NACOS_AUTH_IDENTITY_VALUE: ${NACOS_AUTH_IDENTITY_VALUE}
+      MYSQL_SERVICE_HOST: ${NACOS_MYSQL_HOST}
+      MYSQL_SERVICE_DB_NAME: ${NACOS_MYSQL_DATABASE}
+      MYSQL_SERVICE_PORT: ${NACOS_MYSQL_PORT}
+      MYSQL_SERVICE_USER: ${NACOS_MYSQL_USER}
+      MYSQL_SERVICE_PASSWORD: ${NACOS_MYSQL_PASSWORD}
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     volumes:
       - nacos-data:/home/nacos/data
       - nacos-logs:/home/nacos/logs
