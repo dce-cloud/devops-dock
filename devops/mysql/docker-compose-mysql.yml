@@ -1,7 +1,7 @@
 volumes:
   mysql-data:
     driver: ${VOLUMES_DRIVER}
-  mysql8018-data:
+  mysql80-data:
     driver: ${VOLUMES_DRIVER}
 
 secrets:
@@ -9,10 +9,10 @@ secrets:
     file: ${MYSQL_HOST_PATH}/mysql_root_password
   mysql_password:
     file: ${MYSQL_HOST_PATH}/mysql_password 
-  mysql8018_root_password:
-    file: ${MYSQL8018_HOST_PATH}/mysql_root_password
-  mysql8018_password:
-    file: ${MYSQL8018_HOST_PATH}/mysql_password 
+  mysql80_root_password:
+    file: ${MYSQL80_HOST_PATH}/mysql_root_password
+  mysql80_password:
+    file: ${MYSQL80_HOST_PATH}/mysql_password 
 
 x-mysql8-healthcheck: &mysql8-healthcheck
     test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$(cat /run/secrets/mysql_root_password)']
@@ -56,35 +56,35 @@ services:
         ipv4_address: ${MYSQL_BACKEND_IP}
     healthcheck: *mysql8-healthcheck
 
-### Mysql 8018 ################################################
-  mysql8018:
+### Mysql 80 ################################################
+  mysql80:
     build:
-      context: ${MYSQL8018_HOST_PATH}
+      context: ${MYSQL80_HOST_PATH}
       args:
         DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
-        MYSQL_VERSION: ${MYSQL8018_VERSION}
-    hostname: ${MYSQL8018_HOSTNAME}
-    container_name: ${MYSQL8018_CONTAINER_NAME}
+        MYSQL_VERSION: ${MYSQL80_VERSION}
+    hostname: ${MYSQL80_HOSTNAME}
+    container_name: ${MYSQL80_CONTAINER_NAME}
     restart: ${DOCKER_RESTART_POLICY}
     volumes:
-      - "mysql8018-data:/var/lib/mysql"
-      - "${MYSQL8018_HOST_PATH}/conf:/etc/mysql/conf.d"
-      - "${MYSQL8018_HOST_PATH}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+      - "mysql80-data:/var/lib/mysql"
+      - "${MYSQL80_HOST_PATH}/conf:/etc/mysql/conf.d"
+      - "${MYSQL80_HOST_PATH}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
     ports:
-      - "${MYSQL8018_HOST_PORT}:3306"
+      - "${MYSQL80_HOST_PORT}:3306"
     environment:
       TZ: "${TZ}"
-      MYSQL_DATABASE: "${MYSQL8018_DATABASE}"
-      MYSQL_USER: "${MYSQL8018_USER}"
+      MYSQL_DATABASE: "${MYSQL80_DATABASE}"
+      MYSQL_USER: "${MYSQL80_USER}"
       MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
       MYSQL_INITDB_SKIP_TZINFO: "1"
     secrets:
-      - source: mysql8018_root_password
+      - source: mysql80_root_password
         target: mysql_root_password          
-      - source: mysql8018_password
+      - source: mysql80_password
         target: mysql_password
     networks:
       backend:
-        ipv4_address: ${MYSQL8018_BACKEND_IP}
+        ipv4_address: ${MYSQL80_BACKEND_IP}
     healthcheck: *mysql8-healthcheck
