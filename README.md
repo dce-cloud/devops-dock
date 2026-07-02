@@ -2,6 +2,7 @@
 - [yapi 参考1](https://blog.opendeveloper.cn/yapi/docker)
 - [yapi 参考2](https://github.com/YMFE/yapi)
 - [yapi 参考3](https://github.com/fjc0k/docker-YApi)
+- [nacos 参考1](https://github.com/nacos-group/nacos-docker)
 
 基于 Docker Compose 搭建的DevOps环境
 
@@ -35,6 +36,7 @@
 | &cross; | harness | 172.25.50.21 | 3.3.0 | |
 | &cross; | nginx-fs | 172.25.50.22 | 1.29-alpine | |
 | &cross; | nacos-server | 172.25.50.23 | latest | |
+| &check; | mysql | 172.25.50.24 | mysql8.0.46 | |
 
 ## application (172.25.50.60~172.25.50.80)
 | status | service | backend ip | version | 备注 |
