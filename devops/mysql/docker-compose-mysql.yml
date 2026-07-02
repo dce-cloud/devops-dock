@@ -1,13 +1,26 @@
 volumes:
   mysql-data:
     driver: ${VOLUMES_DRIVER}
+  mysql8018-data:
+    driver: ${VOLUMES_DRIVER}
 
 secrets:
   mysql_root_password:
     file: ${MYSQL_HOST_PATH}/mysql_root_password
   mysql_password:
     file: ${MYSQL_HOST_PATH}/mysql_password 
+  mysql8018_root_password:
+    file: ${MYSQL8018_HOST_PATH}/mysql_root_password
+  mysql8018_password:
+    file: ${MYSQL8018_HOST_PATH}/mysql_password 
 
+x-mysql8-healthcheck: &mysql8-healthcheck
+    test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$(cat /run/secrets/mysql_root_password)']
+    interval: 15s
+    timeout: 5s
+    retries: 5
+    start_period: 10s
+    
 services:
 
 ### Mysql ################################################
@@ -41,9 +54,37 @@ services:
     networks:
       backend:
         ipv4_address: ${MYSQL_BACKEND_IP}
-    healthcheck:
-      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p=$(cat /run/secrets/mysql_root_password)']
-      interval: 15s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+    healthcheck: *mysql8-healthcheck
+
+### Mysql 8018 ################################################
+  mysql8018:
+    build:
+      context: ${MYSQL8018_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        MYSQL_VERSION: ${MYSQL8018_VERSION}
+    hostname: ${MYSQL8018_HOSTNAME}
+    container_name: ${MYSQL8018_CONTAINER_NAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - "mysql8018-data:/var/lib/mysql"
+      - "${MYSQL8018_HOST_PATH}/conf:/etc/mysql/conf.d"
+      - "${MYSQL8018_HOST_PATH}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    ports:
+      - "${MYSQL8018_HOST_PORT}:3306"
+    environment:
+      TZ: "${TZ}"
+      MYSQL_DATABASE: "${MYSQL8018_DATABASE}"
+      MYSQL_USER: "${MYSQL8018_USER}"
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_INITDB_SKIP_TZINFO: "1"
+    secrets:
+      - source: mysql8018_root_password
+        target: mysql_root_password          
+      - source: mysql8018_password
+        target: mysql_password
+    networks:
+      backend:
+        ipv4_address: ${MYSQL8018_BACKEND_IP}
+    healthcheck: *mysql8-healthcheck
