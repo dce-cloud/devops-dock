@@ -3,6 +3,7 @@
 - [yapi 参考2](https://github.com/YMFE/yapi)
 - [yapi 参考3](https://github.com/fjc0k/docker-YApi)
 - [nacos 参考1](https://github.com/nacos-group/nacos-docker)
+- [nacos mysql初始化脚本](https://github.com/alibaba/nacos/blob/master/distribution/conf/mysql-schema.sql?spm=5238cd80.14230f77.0.0.10181d9aY7RCMt&file=mysql-schema.sql)
 
 基于 Docker Compose 搭建的DevOps环境
 
