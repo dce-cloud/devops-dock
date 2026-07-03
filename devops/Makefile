@@ -79,3 +79,8 @@ enter_mysql:
 .PHONY: enter_mongo4
 enter_mongo4:
 	@${DC_ENTER} ${MONGO4_CONTAINER_NAME} bash
+
+
+.PHONY: enter_nacos
+enter_nacos:
+	@${DC_ENTER} ${NACOS_CONTAINER_NAME} bash

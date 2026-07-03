@@ -36,3 +36,9 @@ services:
     networks:
       backend:
         ipv4_address: ${NACOS_BACKEND_IP}
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "http://127.0.0.1:8848/nacos/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
