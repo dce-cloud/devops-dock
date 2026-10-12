@@ -1,0 +1,8 @@
+include:
+  - ../docker-compose-network.yml
+  - path: ./dify/compose.yml
+    project_directory: .
+    env_file: ./dify/defaults.env
+  - path: ./langbot/compose.yml
+    project_directory: .
+    env_file: ./langbot/defaults.env

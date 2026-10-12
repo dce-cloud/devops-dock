@@ -1,0 +1,28 @@
+volumes:
+  liyue-php-stack-log:
+    driver: ${VOLUMES_DRIVER}
+
+services:
+
+### LIYUE PHP STACK ########################################
+  liyue-php-stack:
+    build:
+      context: ${LIYUE_PHP_STACK_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        DOCUMENT_ROOT: ${LIYUE_APACHE_DOCUMENT_ROOT}
+        NAMESPACE: liyue
+    container_name: ${LIYUE_PHP_STACK_CONTAINER_NAME}
+    hostname: ${LIYUE_PHP_STACK_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    volumes:
+      - ${APP_CODE_HOST_PATH}:${APP_CODE_HOST_PATH}${APP_CODE_CONTAINER_FLAG}
+      - ${LIYUE_PHP_STACK_HOST_PATH}/liyue/sites:/etc/apache2/sites-other
+      - liyue-php-stack-log:/var/log/apache2
+    environment:
+      TZ: ${TZ}
+    networks:
+      backend:
+        ipv4_address: ${LIYUE_PHP_STACK_BACKEND_IP}
+    healthcheck:
+      <<: *php-stack-healthcheck
