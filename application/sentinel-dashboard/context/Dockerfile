@@ -1,4 +1,4 @@
-ARG DOCKER_REGISTRY_URL=
+ARG DOCKER_REGISTRY_URL=""
 FROM ${DOCKER_REGISTRY_URL}amd64/buildpack-deps:buster-curl as installer
 
 LABEL maintainer="zz <373045134@qq.com>"

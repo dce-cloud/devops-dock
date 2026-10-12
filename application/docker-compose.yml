@@ -1,7 +1,17 @@
 include:
   - ../docker-compose-network.yml
-  - ./whoami/docker-compose-whoami.yml
-  - ./ofelia/docker-compose-ofelia.yml
-  - ./zentao/docker-compose-zentao.yml
-  - ./yapi/docker-compose-yapi.yml
-  - ./ninedata/docker-compose-ninedata.yml
+  - path: ./whoami/docker-compose-whoami.yml
+    project_directory: .
+    env_file: ./whoami/defaults.env
+  - path: ./ofelia/docker-compose-ofelia.yml
+    project_directory: .
+    env_file: ./ofelia/defaults.env
+  - path: ./zentao/docker-compose-zentao.yml
+    project_directory: .
+    env_file: ./zentao/defaults.env
+  - path: ./yapi/docker-compose-yapi.yml
+    project_directory: .
+    env_file: ./yapi/defaults.env
+  - path: ./ninedata/docker-compose-ninedata.yml
+    project_directory: .
+    env_file: ./ninedata/defaults.env

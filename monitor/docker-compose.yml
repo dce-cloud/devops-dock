@@ -1,5 +1,11 @@
 include:
   - ../docker-compose-network.yml
-  - ./alloy/docker-compose-alloy.yml
-  - ./loki/docker-compose-loki-cluster.yml
-  - ./grafana/docker-compose-grafana.yml
+  - path: ./alloy/docker-compose-alloy.yml
+    project_directory: .
+    env_file: ./alloy/defaults.env
+  - path: ./loki/docker-compose-loki-cluster.yml
+    project_directory: .
+    env_file: ./loki/defaults.env
+  - path: ./grafana/docker-compose-grafana.yml
+    project_directory: .
+    env_file: ./grafana/defaults.env

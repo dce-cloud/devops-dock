@@ -1,20 +1,53 @@
 include:
   - ../docker-compose-network.yml
-  # - ./gitlab/docker-compose-gitlab.yml
-  #- ./gitea/docker-compose-gitea.yml
-  # - ./gitlab-runner/docker-compose-gitlab-runner.yml
-  - ./portainer/docker-compose-portainer.yml
-  - ./mysql/docker-compose-mysql.yml
-  - ./redis/docker-compose-redis.yml
-  - ./postgres/docker-compose-postgres.yml
-  - ./mongo/docker-compose-mongo.yml
-  # - ./minio/docker-compose-minio.yml
-  # - ./rustfs/docker-compose-rustfs.yml
-  # - ./sonarqube/docker-compose-sonarqube.yml
-  # - ./rancher/docker-compose-rancher.yml
-  - ./traefik/docker-compose-traefik.yml
-  - ./nginx/docker-compose-nginx.yml
-  - ./harness/docker-compose-harness.yml
-  - ./fs/docker-compose-fs.yml
-  - ./nacos/docker-compose-nacos.yml
- 
+  # - path: ./gitlab/docker-compose-gitlab.yml
+  #   project_directory: .
+  #   env_file: ./gitlab/defaults.env
+  # - path: ./gitea/docker-compose-gitea.yml
+  #   project_directory: .
+  #   env_file: ./gitea/defaults.env
+  # - path: ./gitlab-runner/docker-compose-gitlab-runner.yml
+  #   project_directory: .
+  #   env_file: ./gitlab-runner/defaults.env
+  - path: ./portainer/docker-compose-portainer.yml
+    project_directory: .
+    env_file: ./portainer/defaults.env
+  - path: ./mysql/docker-compose-mysql.yml
+    project_directory: .
+    env_file: ./mysql/defaults.env
+  - path: ./redis/docker-compose-redis.yml
+    project_directory: .
+    env_file: ./redis/defaults.env
+  - path: ./postgres/docker-compose-postgres.yml
+    project_directory: .
+    env_file: ./postgres/defaults.env
+  - path: ./mongo/docker-compose-mongo.yml
+    project_directory: .
+    env_file: ./mongo/defaults.env
+  # - path: ./minio/docker-compose-minio.yml
+  #   project_directory: .
+  #   env_file: ./minio/defaults.env
+  # - path: ./rustfs/docker-compose-rustfs.yml
+  #   project_directory: .
+  #   env_file: ./rustfs/defaults.env
+  # - path: ./sonarqube/docker-compose-sonarqube.yml
+  #   project_directory: .
+  #   env_file: ./sonarqube/defaults.env
+  # - path: ./rancher/docker-compose-rancher.yml
+  #   project_directory: .
+  #   env_file: ./rancher/defaults.env
+  - path: ./traefik/docker-compose-traefik.yml
+    project_directory: .
+    env_file: ./traefik/defaults.env
+  - path: ./nginx/docker-compose-nginx.yml
+    project_directory: .
+    env_file: ./nginx/defaults.env
+  - path: ./harness/docker-compose-harness.yml
+    project_directory: .
+    env_file: ./harness/defaults.env
+  - path: ./fs/docker-compose-fs.yml
+    project_directory: .
+    env_file: ./fs/defaults.env
+  - path: ./nacos/docker-compose-nacos.yml
+    project_directory: .
+    env_file: ./nacos/defaults.env
